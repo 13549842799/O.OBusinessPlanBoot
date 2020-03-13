@@ -1,9 +1,13 @@
 package com.cyz.ob.ouser.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.basic.controller.BaseController;
 import com.cyz.ob.ouser.service.impl.OuserService;
 
@@ -18,6 +22,15 @@ public class OuserController extends BaseController{
 	
 	@Autowired
 	private OuserService service;
+	
+	@GetMapping("/test")
+	public ResponseResult<Object> test(HttpServletRequest request) {
+		ResponseResult<Object> result = new ResponseResult<>();
+		request.getParameterMap().put("tt", new String[] {"123,456,789"});
+		System.out.println(request.getParameter("tt"));
+		return result.success();
+	}
+	
 	
 	
 

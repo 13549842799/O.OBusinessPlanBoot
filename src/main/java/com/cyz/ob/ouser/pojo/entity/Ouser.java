@@ -1,8 +1,7 @@
 package com.cyz.ob.ouser.pojo.entity;
 
-import java.sql.Timestamp;
+import com.cyz.basic.pojo.CreatorEntity;
 
-import com.cyz.ob.basic.entity.CreatorEntity;
 /**
  * 用户实体类
  * @author cyz
@@ -90,6 +89,11 @@ public class Ouser extends CreatorEntity<Integer>{
 		return "Ouser [accountname=" + accountname + ", bindPhone=" + bindPhone + ", password=" + password
 				+ ", nikename=" + nikename + ", avatar=" + avatar + ", relatedid=" + relatedid + ", autologin_mac="
 				+ autologin_mac + "]";
+	}
+
+	@Override
+	public void acceptId(long id) {
+		this.id = Integer.parseInt(String.valueOf(id));
 	}
 
 	

@@ -1,11 +1,9 @@
 package com.cyz.ob.common.config;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.cyz.ob.ouser.pojo.entity.Ouser;
-import com.github.pagehelper.PageInterceptor;
 
 
 
@@ -55,12 +51,12 @@ public class DataSourceConfig {
 	   factory.setConfiguration(configuration);
 	   factory.setTypeAliasesPackage(typeAliasesPackage); //配置类型别名
 	   //配置分页插件
-	   PageInterceptor pageInterceptor = new PageInterceptor();
+	   /*PageInterceptor pageInterceptor = new PageInterceptor();
 	   Properties ps = new Properties();
 	   ps.put("helperDialect", "mysql");
 	   pageInterceptor.setProperties(ps);
 	   Interceptor[] is = {pageInterceptor};
-	   factory.setPlugins(is);
+	   factory.setPlugins(is);*/
 	   try {
 		   PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 		   // 能加载多个，所以可以配置通配符(如：classpath*:mapper/**/*.xml)
