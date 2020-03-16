@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import com.cyz.ob.basic.service.suport.BaseServiceSuport;
 import com.cyz.ob.ouser.mapper.OuserMapper;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 @Service
 public class OuserService extends BaseServiceSuport<Ouser> {

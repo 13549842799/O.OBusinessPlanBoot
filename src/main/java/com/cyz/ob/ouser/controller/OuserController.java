@@ -26,8 +26,7 @@ public class OuserController extends BaseController{
 	@GetMapping("/test")
 	public ResponseResult<Object> test(HttpServletRequest request) {
 		ResponseResult<Object> result = new ResponseResult<>();
-		request.getParameterMap().put("tt", new String[] {"123,456,789"});
-		System.out.println(request.getParameter("tt"));
+
 		return result.success();
 	}
 	
