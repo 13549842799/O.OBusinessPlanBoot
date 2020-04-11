@@ -4,21 +4,24 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.cyz.ob.basic.service.suport.BaseServiceSuport;
+import com.cyz.basic.Exception.AddErrorException;
+import com.cyz.basic.service.impl.BasicServiceImplTemplate;
 import com.cyz.ob.ouser.mapper.OuserMapper;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @Service
-public class OuserService extends BaseServiceSuport<Ouser> {
+public class OuserService extends BasicServiceImplTemplate<Ouser> {
 	
 	@Autowired
 	private OuserMapper mapper;
 	
-	/*@Autowired
-	private StringRedisTemplate stringRedisTmplate;*/
+	public Ouser getByUsername(String username) {
+		Ouser user = new Ouser();
+		user.setUsername(username);
+		return get(user);
+	}
 	
 	@Cacheable(value="testList2", key="#root.methodName")
 	public List<Ouser> test() {
@@ -27,5 +30,16 @@ public class OuserService extends BaseServiceSuport<Ouser> {
 		//PageInfo<Ouser> p = new PageInfo<>(list);
 		return list;
 	}
+
+	@Override
+	public void add(Ouser t) throws AddErrorException {
+		
+	}
+
+	@Override
+	public Ouser newEntity() {
+		return new Ouser();
+	}
+
 
 }

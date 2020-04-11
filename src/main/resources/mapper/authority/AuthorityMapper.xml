@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.authority.mapper.AuthorityMapper">
+
+     <resultMap id="AuthorityMap" type="authority">
+        <id property="id" column="id"/>
+        <result property="authName" column="authName"/>
+        <result property="displayName" column="displayName"/>
+        <result property="remark" column="remark"/>
+        <result property="sort" column="sort"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="modify" column="modify"/>
+        <result property="modifyTime" column="modifyTime"/>
+        <result property="delflag" column="delflag"/>
+    </resultMap>
+    
+    <resultMap type="authority" id="AuthorityWithResMap" extends="AuthorityMap">
+        <collection property="resources" ofType="resources">
+            <id property="id" column="reid"/>
+	        <result property="url" column="url"/>
+        </collection>
+    </resultMap>
+
+     <sql id="base_column">
+        au.id,au.authName,au.displayName,au.remark,au.`sort`,au.creator, au.createTime, au.modify, au.modifyTime, au.delflag
+     </sql>
+     
+     <sql id="res_column">
+        <include refid="base_column" />, re.id as reid, re.url as url
+     </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO authorities
+        (
+            <trim suffixOverrides=",">
+                <if test="id != null ">
+                id,
+                </if>
+                <if test="authName != null ">
+                authName,
+                </if>
+                <if test="displayName != null ">
+                displayName,
+                </if>
+                <if test="remark != null ">
+                remark,
+                </if>
+                <if test="sort != null">
+                sort,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modify != null ">
+                modify,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="id != null ">
+                #{id},
+                </if>
+                <if test="authName != null ">
+                #{authName},
+                </if>
+                <if test="displayName != null ">
+                #{displayName},
+                </if>
+                <if test="remark != null ">
+                #{remark},
+                </if>
+                <if test="sort != null">
+                #{sort},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="modify != null ">
+                #{modify},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+            </trim>
+        )
+    </insert>
+
+    <update id="delete" >
+        UPDATE authorities set delflag = #{delflag}
+         WHERE id = #{ id })
+    </update>
+
+    <select id="get" resultType="authority" parameterType="authority">
+        SELECT 
+        <include refid="base_column"/>
+        FROM authorities au
+        <where>
+        <trim prefixOverrides="AND">
+            <if test="id != null">
+            au.id = #{id}
+            </if>
+            <if test="authName != null">
+            au.authName = #{authName}
+            </if>
+            <if test="displayName != null">
+            au.displayName = #{displayName}
+            </if>
+            <if test="delflag != null">
+            au.delflag = #{delflag}
+            </if>
+        </trim>
+        </where>
+    </select>
+
+    <select id="getList" resultMap="AuthorityMap" parameterType="authority">
+        SELECT 
+        <include refid="base_column"/>
+        FROM authorities au
+        LEFT JOIN authorities_ouser au_o ON au.id = au_o.auth_id
+        LEFT JOIN ouser ou ON au_o.user_id = ou.id 
+        <where>
+        <trim prefixOverrides="AND">
+            <if test="id != null">
+            au.id = #{id}
+            </if>
+            <if test="authName != null">
+            AND LOCATE(#{authName}, au.authName) > 0
+            </if>
+            <if test="displayName != null">
+            AND LOCATE(#{displayName}, au.displayName) > 0
+            </if>
+            <if test="remark != null">
+            AND LOCATE(#{remark}, au.remark) > 0
+            </if>
+            <if test="creator != null">
+            AND au.creator = #{creator}
+            </if>
+            <if test="delflag != null">
+            AND au.delflag = #{delflag}
+            </if>
+            <if test="user != null">
+                <if test="user.id != null">
+                AND ou.id = #{user.id}
+                </if>
+                <if test="user.username != null">
+                AND ou.user.username = #{user.id}
+                </if>
+            </if>
+        </trim>
+        </where>
+    </select>
+
+    <select id="getAllAuthoritiesWithResources" resultMap="AuthorityWithResMap">
+    SELECT
+    <include refid="res_column" />
+    FROM authorities au
+    LEFT JOIN resources re ON au.id = re.authId
+    WHERE
+    au.delflag = #{delflag}
+    AND re.delflag =#{delflag}
+    AND re.state = #{state}
+    AND re.type = 3
+    </select>
+    
+</mapper>

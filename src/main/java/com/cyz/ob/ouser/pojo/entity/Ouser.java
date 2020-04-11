@@ -1,20 +1,22 @@
 package com.cyz.ob.ouser.pojo.entity;
 
-import com.cyz.basic.pojo.CreatorEntity;
+import java.util.List;
 
+import com.cyz.basic.config.security.detail.SecurityAuthority;
+import com.cyz.basic.config.security.detail.SecurityUser;
 /**
  * 用户实体类
  * @author cyz
  *
  */
-public class Ouser extends CreatorEntity<Integer>{
+public class Ouser extends  SecurityUser {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4517424619136772731L;
 
-	private String accountname;
+	private String username;
 	
 	private String bindPhone; //绑定手机
 	
@@ -27,13 +29,21 @@ public class Ouser extends CreatorEntity<Integer>{
 	private Integer relatedid;
 	
 	private String autologin_mac;
-
-	public String getAccountname() {
-		return accountname;
+	
+	public Ouser() {}
+	
+	public Ouser(String username, String password, List<SecurityAuthority> auths) {
+		this.auths = auths;
+		this.username = username;
+		this.password = password;
 	}
 
-	public void setAccountname(String accountname) {
-		this.accountname = accountname;
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getBindPhone() {
@@ -83,10 +93,12 @@ public class Ouser extends CreatorEntity<Integer>{
 	public void setAutologin_mac(String autologin_mac) {
 		this.autologin_mac = autologin_mac;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "Ouser [accountname=" + accountname + ", bindPhone=" + bindPhone + ", password=" + password
+		return "Ouser [username=" + username + ", bindPhone=" + bindPhone + ", password=" + password
 				+ ", nikename=" + nikename + ", avatar=" + avatar + ", relatedid=" + relatedid + ", autologin_mac="
 				+ autologin_mac + "]";
 	}
@@ -95,9 +107,6 @@ public class Ouser extends CreatorEntity<Integer>{
 	public void acceptId(long id) {
 		this.id = Integer.parseInt(String.valueOf(id));
 	}
-
-	
-	
 	
 	
 

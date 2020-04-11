@@ -4,14 +4,11 @@
 
      <resultMap id="OuserMap" type="ouser">
         <id property="id" column="id"/>
-        <result property="accountname" column="accountname"/>
+        <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="nikename" column="nikename"/>
-        <result property="avatar" column="avatar"/>
-        <result property="relatedid" column="relatedid"/>
-        <result property="autologin_mac" column="autologin_mac"/>
-        <result property="createtime" column="createtime"/>
-        <result property="state" column="state"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
         <result property="delflag" column="delflag"/>
     </resultMap>
     
@@ -27,11 +24,27 @@
     </resultMap> -->
 
      <sql id="base_column">
-        ou.id,ou.accountname,ou.password,ou.nikename,ou.avatar,ou.relatedid,ou.autologin_mac,ou.createtime,ou.state,ou.delflag
+        ou.id,ou.username,ou.password,ou.nikename,ou.delflag
      </sql>
      
-     <select id="getList" resultType="ouser">
-     select * from admin
+     <select id="get" resultMap="OuserMap">
+     select 
+     <include refid="base_column" />
+     from ouser ou
+     <where>
+     <trim prefixOverrides="AND">
+     <if test="id != null">
+         ou.id = #{id}
+     </if>
+     <if test="username != null">
+         ou.username = #{username}
+     </if>
+     </trim>
+     </where>
+     </select>
+     
+     <select id="getList" resultMap="OuserMap">
+     select * from ouser
      </select>
 
     <!-- <insert id="add" useGeneratedKeys="true" keyProperty="id">
