@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cyz.basic.config.security.authentication.UsernamePasswordAuthenticationToken;
 import com.cyz.basic.config.security.authentication.dao.CustomSecurityProvider;
+import com.cyz.basic.config.security.authentication.dao.DaoAuthenticationProvider;
 import com.cyz.basic.config.security.core.userdetails.UserDetails;
 import com.cyz.basic.config.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.cyz.basic.config.security.exception.AuthenticationException;
@@ -18,7 +19,7 @@ import com.cyz.basic.config.security.provisioning.UserDetailServiceSupport;
  * @author cyz
  *
  */
-public class MyProvider extends CustomSecurityProvider{
+public class MyProvider extends DaoAuthenticationProvider{
 	
 	private final static int DEF_MAX_LOGIN_COUNT = 5;
 	
