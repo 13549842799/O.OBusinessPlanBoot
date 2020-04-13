@@ -1,4 +1,4 @@
-package com.cyz.ob.common.config.security;
+package com.cyz.ob.common.configuration.security;
 
 import org.springframework.data.redis.core.RedisTemplate;
 

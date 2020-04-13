@@ -1,4 +1,4 @@
-package com.cyz.ob.common.config;
+package com.cyz.ob.common.configuration;
 
 import java.io.IOException;
 

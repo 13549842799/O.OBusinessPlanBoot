@@ -1,4 +1,4 @@
-package com.cyz.ob.common.config.security;
+package com.cyz.ob.common.configuration.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfig{
 	private void initProperties() {
 
 	}
-
-
-	protected void additionalConfigure(HttpSecurity http) {
-		
-	}
 	
 	@Bean
 	public DefaultFilterInvocationSecurityMetadataSource defaultFilterInvocationSecurityMetadataSource(AuthorityService authorityService) {
@@ -73,13 +68,5 @@ public class SecurityConfiguration extends WebSecurityConfig{
 		
 		return provider;
 	}*/
-	
-	
-	
-	public List<Filter> addFilters() {
-		List<Filter> filters = new ArrayList<>();
-		filters.add(new TestFilter());
-		return filters;
-	}
 
 }
