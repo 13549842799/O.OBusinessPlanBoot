@@ -20,36 +20,36 @@ import com.cyz.basic.config.security.authentication.AuthenticationProvider;
 import com.cyz.basic.config.security.authentication.ProviderManager;
 import com.cyz.basic.config.security.config.annotation.web.builders.HttpSecurity;
 import com.cyz.basic.config.security.config.annotation.web.configuration.EnableWebSecurity;
+import com.cyz.basic.config.security.web.access.ExceptionTranslationFilter;
+import com.cyz.basic.config.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import com.cyz.basic.config.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.cyz.ob.authority.service.AuthorityService;
 
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfig{
-//public class SecurityConfig {
+public class SecurityConfiguration extends WebSecurityConfig{
 	
-	@Autowired
+/*	@Autowired
 	private AuthorityService authorityService;
-	
-    @Autowired
-	private RedisTemplate<String, Object> redisTemplate;
+	*/
+    /*@Autowired
+	private RedisTemplate<String, Object> redisTemplate;*/
 	
 	@PostConstruct
 	private void initProperties() {
 
 	}
-	
-	
-	
-	/*@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 
 
 	protected void additionalConfigure(HttpSecurity http) {
-
+		
+	}
+	
+	@Bean
+	public DefaultFilterInvocationSecurityMetadataSource defaultFilterInvocationSecurityMetadataSource(AuthorityService authorityService) {
+		
+		DefaultFilterInvocationSecurityMetadataSource source= new MySecurityMetadaSource(authorityService);
+		
+		return source;
 	}
 	
 	/*@Bean
