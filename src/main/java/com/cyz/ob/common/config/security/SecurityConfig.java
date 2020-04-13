@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfig{
 
 
 
-	@Override
 	protected void additionalConfigure(HttpSecurity http) {
 
 	}
