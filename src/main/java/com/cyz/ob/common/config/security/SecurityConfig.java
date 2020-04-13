@@ -16,7 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.cyz.basic.config.security.SecurityProperties;
 import com.cyz.basic.config.security.WebSecurityConfig;
-import com.cyz.basic.config.security.access.vote.MyAuthenticatedVoter;
 import com.cyz.basic.config.security.authentication.AuthenticationProvider;
 import com.cyz.basic.config.security.authentication.ProviderManager;
 import com.cyz.basic.config.security.config.annotation.web.builders.HttpSecurity;
