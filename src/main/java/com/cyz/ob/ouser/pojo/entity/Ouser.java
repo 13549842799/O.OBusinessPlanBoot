@@ -1,15 +1,12 @@
 package com.cyz.ob.ouser.pojo.entity;
 
-import java.util.List;
-
-import com.cyz.basic.config.security.detail.SecurityAuthority;
-import com.cyz.basic.config.security.detail.SecurityUser;
+import com.cyz.basic.pojo.CreatorEntity;
 /**
  * 用户实体类
  * @author cyz
  *
  */
-public class Ouser extends  SecurityUser {
+public class Ouser extends  CreatorEntity<Integer> {
 	
 	/**
 	 * 
@@ -32,11 +29,16 @@ public class Ouser extends  SecurityUser {
 	
 	public Ouser() {}
 	
-	public Ouser(String username, String password, List<SecurityAuthority> auths) {
-		this.auths = auths;
+	public Ouser(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}
+	
+	/*public Ouser(String username, String password, List<SecurityAuthority> auths) {
+		this.auths = auths;
+		this.username = username;
+		this.password = password;
+	}*/
 
 	public String getUsername() {
 		return username;

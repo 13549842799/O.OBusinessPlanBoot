@@ -46,6 +46,40 @@
      <select id="getList" resultMap="OuserMap">
      select * from ouser
      </select>
+     
+     <update id="update" parameterType="ouser">
+        UPDATE ouser SET 
+            <trim suffixOverrides=","> 
+                <if test="accountname != null ">
+                username = #{username},
+                </if>
+                <!-- <if test="password != null ">
+                password = #{password},
+                </if> -->
+                <if test="nikename != null ">
+                nikename = #{nikename},
+                </if>
+                <if test="avatar != null ">
+                avatar = #{avatar},
+                </if>
+                <if test="relatedid != null ">
+                relatedid = #{relatedid},
+                </if>
+                <if test="autologin_mac != null ">
+                autologin_mac = #{autologin_mac},
+                </if>
+                <if test="createtime != null ">
+                createtime = #{createtime},
+                </if>
+                <if test="state != null ">
+                state = #{state,jdbcType=TINYINT},
+                </if>
+                <if test="delflag != null ">
+                delflag = #{delflag,jdbcType=TINYINT}
+                </if>
+            </trim>
+         WHERE id = #{id}
+    </update>
 
     <!-- <insert id="add" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO admin
@@ -119,39 +153,6 @@
          WHERE id = #{ key })
     </update>
 
-    <update id="update" parameterType="admin">
-        UPDATE admin SET 
-            <trim suffixOverrides=","> 
-                <if test="accountname != null ">
-                accountname = #{accountname},
-                </if>
-                <if test="password != null ">
-                password = #{password},
-                </if>
-                <if test="nikename != null ">
-                nikename = #{nikename},
-                </if>
-                <if test="avatar != null ">
-                avatar = #{avatar},
-                </if>
-                <if test="relatedid != null ">
-                relatedid = #{relatedid},
-                </if>
-                <if test="autologin_mac != null ">
-                autologin_mac = #{autologin_mac},
-                </if>
-                <if test="createtime != null ">
-                createtime = #{createtime},
-                </if>
-                <if test="state != null ">
-                state = #{state,jdbcType=TINYINT},
-                </if>
-                <if test="delflag != null ">
-                delflag = #{delflag,jdbcType=TINYINT}
-                </if>
-            </trim>
-         WHERE id = #{id}
-    </update>
 
     <select id="getById" resultType="admin" parameterType="admin">
         SELECT 
