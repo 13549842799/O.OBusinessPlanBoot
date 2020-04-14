@@ -1,5 +1,6 @@
 package com.cyz.ob;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @SpringBootApplication(scanBasePackages= {"com.cyz.basic.config", "com.cyz.ob"})
-//@SpringBootApplication()
+//@MapperScan("com.cyz.ob.*.mapper") 
 @EnableCaching
 public class Application {
 

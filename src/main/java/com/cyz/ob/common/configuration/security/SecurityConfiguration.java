@@ -1,29 +1,22 @@
 package com.cyz.ob.common.configuration.security;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
-import javax.servlet.annotation.WebFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import com.cyz.basic.config.security.SecurityProperties;
 import com.cyz.basic.config.security.WebSecurityConfig;
-import com.cyz.basic.config.security.authentication.AuthenticationProvider;
-import com.cyz.basic.config.security.authentication.ProviderManager;
 import com.cyz.basic.config.security.config.annotation.web.builders.HttpSecurity;
 import com.cyz.basic.config.security.config.annotation.web.configuration.EnableWebSecurity;
-import com.cyz.basic.config.security.web.access.ExceptionTranslationFilter;
 import com.cyz.basic.config.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import com.cyz.basic.config.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.cyz.ob.authority.service.AuthorityService;
+import com.cyz.ob.common.filter.WebMessageAuthenticationFilter;
+import com.cyz.ob.ouser.service.impl.OuserService;
+import com.cyz.ob.ouser.service.impl.WebMessageService;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfig{
@@ -33,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfig{
 	*/
     /*@Autowired
 	private RedisTemplate<String, Object> redisTemplate;*/
+	
+	@Autowired
+	private WebMessageService webMessageService;
 	
 	@PostConstruct
 	private void initProperties() {
@@ -46,6 +42,26 @@ public class SecurityConfiguration extends WebSecurityConfig{
 		
 		return source;
 	}
+	
+	@Bean
+	public MyProvider myProvider(RedisTemplate<String, Object> redisTemplate, AuthorityService authorityService, OuserService userService) {
+		return new MyProvider(redisTemplate, new UserDetailServiceImpl(userService, authorityService));
+	}
+
+	@Override
+	protected void uniqueConfigure(HttpSecurity http) {
+		http.addFilterBefore(webMessageAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		
+	}
+	
+	private Filter webMessageAuthenticationFilter() {
+		WebMessageAuthenticationFilter filter = new WebMessageAuthenticationFilter(webMessageService, getProperties().getLoginUrl());
+		return filter;
+	}
+	
+	
+	
+	
 	
 	/*@Bean
 	public ProviderManager providerManager() {
