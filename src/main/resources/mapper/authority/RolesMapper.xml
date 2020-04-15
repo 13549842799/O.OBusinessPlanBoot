@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.authority.mapper.RolesMapper"> 
+    
+    <sql id="base_column">
+        ro.id,ro.code,ro.sort,ro.name,ro.creator,
+        ro.createTime,ro.modifier,ro.modifierTime,ro.updateNo,
+        ro.state,ro.delflag
+    </sql>
+    
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO
+        role
+    (
+      code , sort, name, creator, createTime, modifier, modifierTime, describes, 
+      state, delflag
+    )    
+    VALUES
+    (
+     #{code}, #{sort}, #{name}, #{creator}, NOW(), #{modifier}, NOW(), #{describes},
+     #{state, jdbcType=TINYINT}, #{delflag, jdbcType=TINYINT}
+    )
+    </insert>
+   
+    
+	<update id="updateFull" parameterType="roles">
+        UPDATE role SET 
+            code = #{code},
+            sort = #{sort},
+            name = #{name},
+            modifier = #{modifier},
+            modifierTime = #{modifierTime},
+            describes = #{describes},
+            state = #{state,jdbcType=TINYINT},
+            delflag = #{delflag,jdbcType=TINYINT}
+         WHERE id = #{id}
+    </update>
+	
+	
+    <select id="getList" resultType="roles" parameterType="roles">
+        SELECT
+        <include refid="base_column"/>
+        FROM role ro
+        <where>
+          <if test="creator != null">
+            ro.creator = #{creator, jdbcType=INTEGER}
+          </if>
+          <if test="state != null">
+            AND ro.state = #{state,jdbcType=TINYINT}
+          </if>
+          <if test="delflag != null">
+            AND ro.delflag = #{delflag, jdbcType=TINYINT}
+          </if>
+        </where>
+        ORDER BY sort 
+    </select>
+    
+
+</mapper>

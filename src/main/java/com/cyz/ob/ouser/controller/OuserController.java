@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.additional.pojo.entity.Msg;
 import com.cyz.ob.additional.service.MsgService;
-import com.cyz.ob.basic.controller.BaseController;
 import com.cyz.ob.common.constant.ResultConstant;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
@@ -29,7 +29,7 @@ import com.cyz.ob.ouser.service.impl.OuserService;
  */
 @RestController
 @RequestMapping("/api/ouser")
-public class OuserController extends BaseController{
+public class OuserController extends BasicController{
 	
 	@Autowired
 	private OuserService service;

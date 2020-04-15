@@ -20,7 +20,7 @@ public interface OuserMapper extends BasicMapper<Ouser>{
 	  * @param code
 	  * @return
 	  */
-	 @Select("SELECT COUNT(id) FROM ouser WHERE nikename=#{nikename,jdbcType=VARCHAR} AND delflag=#{delflag,jdbcType=TINYINT}")
-	 int validNikeNameExist(@Param("nikename")String nikename,@Param("delflag")byte delflag);
+	@Select("SELECT COUNT(id) FROM ouser WHERE nikename=#{nikename,jdbcType=VARCHAR} AND delflag=#{delflag,jdbcType=TINYINT}")
+	int validNikeNameExist(@Param("nikename")String nikename,@Param("delflag")byte delflag);
 
 }

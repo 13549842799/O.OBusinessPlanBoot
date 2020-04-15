@@ -6,7 +6,7 @@ import com.cyz.basic.config.security.detail.SecurityAuthority;
 import com.cyz.basic.pojo.ModifyEntity;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
-public class Authority extends ModifyEntity<Integer> implements SecurityAuthority {
+public class Authorities extends ModifyEntity<Integer> implements SecurityAuthority {
 	
 
 	/**
@@ -146,8 +146,8 @@ public class Authority extends ModifyEntity<Integer> implements SecurityAuthorit
 			return this;
 		}
 		
-		public Authority create() {
-			Authority authority = new Authority();
+		public Authorities create() {
+			Authorities authority = new Authorities();
 			authority.setId(id);
 			authority.setAuthName(authName);
 			authority.setDisplayName(displayName);

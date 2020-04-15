@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.authority.mapper.ResourcesMapper">
+
+     <resultMap id="ResourceMap" type="resources">
+        <id property="id" column="id"/>
+        <result property="pid" column="pid"/>
+        <result property="authId" column="authId"/>
+        <result property="name" column="name"/>
+        <result property="displayName" column="displayName"/>
+        <result property="url" column="url"/>
+        <result property="type" column="type"/>
+        <result property="describes" column="describes"/>
+        <result property="locking" column="locking"/>
+        <result property="state" column="state"/>
+        <result property="delflag" column="delflag"/>
+    </resultMap>
+
+     <sql id="base_column">
+        re.id,re.pid,re.authId,re.name,re.displayName,re.url,re.type
+       ,re.describes,re.locking,re.state,re.delflag
+     </sql>
+     
+     <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO resources
+        (
+            <trim>
+                <if test="id != null ">
+                id,
+                </if>
+                <if test="pid != null ">
+                pid,
+                </if>
+                <if test="authId != null ">
+                authId,
+                </if>
+                <if test="name != null ">
+                name,
+                </if>
+                <if test="displayName != null ">
+                displayName,
+                </if>
+                <if test="url != null ">
+                url,
+                </if>
+                <if test="type != null ">
+                type,
+                </if>
+                <if test="describes != null ">
+                describes,
+                </if>
+                <if test="locking != null ">
+                `locking`,
+                </if>
+                <if test="state != null ">
+                state,
+                </if>
+                <if test="delflag != null ">
+                delflag
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim>
+                <if test="id != null ">
+                #{id},
+                </if>
+                <if test="pid != null ">
+                #{pid},
+                </if>
+                <if test="authId != null ">
+                #{authId},
+                </if>
+                <if test="name != null ">
+                #{name},
+                </if>
+                <if test="displayName != null ">
+                #{displayName},
+                </if>
+                <if test="url != null ">
+                #{url},
+                </if>
+                <if test="type != null ">
+                #{type},
+                </if>
+                <if test="describes != null ">
+                #{describes},
+                </if>
+                <if test="locking != null ">
+                #{locking},
+                </if>
+                <if test="state != null ">
+                #{state,jdbcType=TINYINT},
+                </if>
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT}
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" >
+        UPDATE resources set delflag = #{delflag}
+         WHERE id = #{ id }
+    </update>
+    
+    <update id="update" parameterType="resources">
+        UPDATE resources SET 
+            <trim>
+                <if test="pid != null ">
+                pid = #{pid},
+                </if>
+                <if test="name != null ">
+                name = #{name},
+                </if>
+                <if test="request_url != null ">
+                request_url = #{request_url},
+                </if>
+                <if test="icon != null ">
+                icon = #{icon},
+                </if>
+                <if test="type != null ">
+                type = #{type},
+                </if>
+                <if test="describes != null ">
+                describes = #{describes},
+                </if>
+                <if test="key != null ">
+                `key` = #{key},
+                </if>
+                <if test="state != null ">
+                state = #{state,jdbcType=TINYINT},
+                </if>
+                <if test="delflag != null ">
+                delflag = #{delflag,jdbcType=TINYINT}
+                </if>
+            </trim>
+         WHERE id = #{id}
+    </update>
+    
+    <update id="updateFull" parameterType="resources">
+        UPDATE resource SET 
+            pid = #{pid},
+            name = #{name},
+            request_url = #{request_url},
+            style = #{style},
+            type = #{type},
+            describes = #{describes},
+            `key` = #{key},
+            state = #{state,jdbcType=TINYINT},
+            delflag = #{delflag,jdbcType=TINYINT}
+         WHERE id = #{id}
+    </update>
+
+    <select id="get" parameterType="resources" resultType="resources">
+        SELECT 
+        <include refid="base_column" />
+        FROM resources re
+        <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null">
+        AND id = #{id}
+        </if>
+        <if test="name != null">
+        AND `name` = #{name}
+        </if>
+        <if test="delflag != null">
+        AND delflag = #{delflag}
+        </if>
+        </trim>
+        </where>
+        
+    </select>
+    
+    <select id="getList" resultType="resources" parameterType="resources">
+        SELECT 
+        <include refid="base_column"/>
+        FROM resources re
+    <where>
+        <if test="id != null ">
+        AND re.`id` = #{id}
+        </if>
+        <if test="pid != null ">
+        AND re.`pid` = #{pid}
+        </if>
+        <if test="name != null ">
+        AND re.`name` = #{name}
+        </if>
+        <if test="request_url != null ">
+        AND re.`request_url` = #{request_url}
+        </if>
+        <if test="style != null ">
+        AND re.`style` = #{style}
+        </if>
+        <if test="type != null ">
+        AND re.`type` = #{type}
+        </if>
+        <if test="describes != null ">
+        AND re.`describes` = #{describes}
+        </if>
+        <if test="key != null ">
+        AND re.`key` = #{key}
+        </if>
+        <if test="locking != null ">
+        AND re.`locking` = #{locking}
+        </if>
+        <if test="state != null ">
+        AND re.`state` = #{state,jdbcType=TINYINT}
+        </if>
+        <if test="delflag != null ">
+        AND re.`delflag` = #{delflag,jdbcType=TINYINT}
+        </if>
+    </where>
+    </select>
+
+
+</mapper>

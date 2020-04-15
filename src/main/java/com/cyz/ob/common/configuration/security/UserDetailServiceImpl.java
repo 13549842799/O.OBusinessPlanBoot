@@ -8,8 +8,8 @@ import com.cyz.basic.config.security.core.userdetails.User.UserBuilder;
 import com.cyz.basic.config.security.core.userdetails.UserDetails;
 import com.cyz.basic.config.security.detail.SecurityAuthority;
 import com.cyz.basic.config.security.provisioning.UserDetailServiceSupport;
-import com.cyz.ob.authority.pojo.Authority;
-import com.cyz.ob.authority.service.AuthorityService;
+import com.cyz.ob.authority.pojo.Authorities;
+import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
 
@@ -17,9 +17,9 @@ public class UserDetailServiceImpl extends UserDetailServiceSupport<Ouser> {
 	
 	private final OuserService userService;
 
-	private final AuthorityService authorityService;
+	private final AuthoritiesService authorityService;
 	
-	public UserDetailServiceImpl(OuserService userService, AuthorityService authorityService) {
+	public UserDetailServiceImpl(OuserService userService, AuthoritiesService authorityService) {
 		this.userService = userService;
 		this.authorityService = authorityService;
 	}
@@ -40,7 +40,7 @@ public class UserDetailServiceImpl extends UserDetailServiceSupport<Ouser> {
 	@Override
 	public List<SecurityAuthority> getAuthsByUsername(Ouser user) {
 		List<SecurityAuthority> auths = new ArrayList<>();		
-	    List<Authority> authorites = (authorites = authorityService.getAuthoritiesByUserId(user.getId())) != null ? authorites : new ArrayList<>();
+	    List<Authorities> authorites = (authorites = authorityService.getAuthoritiesByUserId(user.getId())) != null ? authorites : new ArrayList<>();
 	    auths.addAll(authorites);
 		return auths;
 	}

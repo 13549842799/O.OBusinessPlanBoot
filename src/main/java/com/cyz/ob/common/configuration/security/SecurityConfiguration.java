@@ -13,7 +13,7 @@ import com.cyz.basic.config.security.config.annotation.web.builders.HttpSecurity
 import com.cyz.basic.config.security.config.annotation.web.configuration.EnableWebSecurity;
 import com.cyz.basic.config.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import com.cyz.basic.config.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.cyz.ob.authority.service.AuthorityService;
+import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.common.filter.WebMessageAuthenticationFilter;
 import com.cyz.ob.ouser.service.impl.OuserService;
 import com.cyz.ob.ouser.service.impl.WebMessageService;
@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfig{
 	}
 	
 	@Bean
-	public DefaultFilterInvocationSecurityMetadataSource defaultFilterInvocationSecurityMetadataSource(AuthorityService authorityService) {
+	public DefaultFilterInvocationSecurityMetadataSource defaultFilterInvocationSecurityMetadataSource(AuthoritiesService authorityService) {
 		
 		DefaultFilterInvocationSecurityMetadataSource source= new MySecurityMetadaSource(authorityService);
 		
@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfig{
 	}
 	
 	@Bean
-	public MyProvider myProvider(RedisTemplate<String, Object> redisTemplate, AuthorityService authorityService, OuserService userService) {
+	public MyProvider myProvider(RedisTemplate<String, Object> redisTemplate, AuthoritiesService authorityService, OuserService userService) {
 		return new MyProvider(redisTemplate, new UserDetailServiceImpl(userService, authorityService));
 	}
 

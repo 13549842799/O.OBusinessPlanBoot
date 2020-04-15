@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cyz.ob.authority.mapper.AuthorityMapper">
+<mapper namespace="com.cyz.ob.authority.mapper.AuthoritiesMapper">
 
-     <resultMap id="AuthorityMap" type="authority">
+     <resultMap id="AuthorityMap" type="authorities">
         <id property="id" column="id"/>
         <result property="authName" column="authName"/>
         <result property="displayName" column="displayName"/>
@@ -15,7 +15,7 @@
         <result property="delflag" column="delflag"/>
     </resultMap>
     
-    <resultMap type="authority" id="AuthorityWithResMap" extends="AuthorityMap">
+    <resultMap type="authorities" id="AuthorityWithResMap" extends="AuthorityMap">
         <collection property="resources" ofType="resources">
             <id property="id" column="reid"/>
 	        <result property="url" column="url"/>
@@ -98,7 +98,7 @@
          WHERE id = #{ id })
     </update>
 
-    <select id="get" resultType="authority" parameterType="authority">
+    <select id="get" resultType="authorities" parameterType="authorities">
         SELECT 
         <include refid="base_column"/>
         FROM authorities au
@@ -120,7 +120,7 @@
         </where>
     </select>
 
-    <select id="getList" resultMap="AuthorityMap" parameterType="authority">
+    <select id="getList" resultMap="AuthorityMap" parameterType="authorities">
         SELECT 
         <include refid="base_column"/>
         FROM authorities au

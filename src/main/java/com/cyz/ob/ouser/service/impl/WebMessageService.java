@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.cyz.basic.mapper.BasicMapper;
 import com.cyz.basic.service.impl.BasicServiceImplTemplate;
 import com.cyz.ob.ouser.mapper.WebMessageMapper;
 import com.cyz.ob.ouser.pojo.entity.WebMessage;

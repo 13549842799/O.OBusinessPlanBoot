@@ -6,6 +6,7 @@ import com.cyz.basic.config.security.authentication.UsernamePasswordAuthenticati
 import com.cyz.basic.config.security.authentication.dao.DaoAuthenticationProvider;
 import com.cyz.basic.config.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.cyz.basic.config.security.provisioning.UserDetailServiceSupport;
+import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 
 /**
@@ -19,7 +20,7 @@ public class MyProvider extends DaoAuthenticationProvider{
 	
 	private final RedisTemplate<String, Object>  redisTemplate;
 	
-	public MyProvider(RedisTemplate<String, Object>  redisTemplate, UserDetailServiceSupport detailsService) {
+	public MyProvider(RedisTemplate<String, Object>  redisTemplate, UserDetailServiceSupport<Ouser> detailsService) {
 		this.redisTemplate = redisTemplate;
 		this.detailsService = detailsService;
 		this.setPasswordEncoder(new BCryptPasswordEncoder(16));
@@ -34,7 +35,6 @@ public class MyProvider extends DaoAuthenticationProvider{
 
 	@Override
 	public void updateLoginCount(int laststCount, UsernamePasswordAuthenticationToken authentication) {
-		System.out.println("更新尝试登录次数");
 		if (laststCount == 1) {
 			redisTemplate.opsForValue().set(LOGIN_MAX_COUNT_PREFIX + authentication.getPrincipal()
 			    , laststCount, maxLoginCount.getExpire(), maxLoginCount.getUnit());

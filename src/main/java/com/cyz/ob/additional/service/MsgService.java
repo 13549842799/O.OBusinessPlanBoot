@@ -1,5 +1,7 @@
 package com.cyz.ob.additional.service;
 
+import org.springframework.stereotype.Service;
+
 import com.cyz.basic.service.impl.BasicServiceImplTemplate;
 import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.additional.pojo.entity.Msg;
@@ -9,7 +11,8 @@ import com.cyz.ob.additional.pojo.entity.Msg;
  * @author cyz
  *
  */
-public class MsgService extends BasicServiceImplTemplate<Msg> {
+@Service
+public class MsgService {
 	
     public boolean validMsg(String phoneNo, String verificationCode, byte type) {
 		
@@ -21,10 +24,10 @@ public class MsgService extends BasicServiceImplTemplate<Msg> {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public Msg newEntity() {
 		
 		return new Msg();
-	}
+	}*/
 
 }

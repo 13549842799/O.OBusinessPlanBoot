@@ -3,7 +3,7 @@ import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.cyz.ob.authority.service.AuthorityService;
+import com.cyz.ob.authority.service.AuthoritiesService;
 
 public class MapperTest {
 	
@@ -16,7 +16,7 @@ public class MapperTest {
 	
 	@After
 	public void after () {
-		 context.getBean("authorityService", AuthorityService.class);
+		 context.getBean("authorityService", AuthoritiesService.class);
 	}
 
 }

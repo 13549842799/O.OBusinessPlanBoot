@@ -14,6 +14,7 @@ import com.cyz.basic.Exception.AddErrorException;
 import com.cyz.basic.config.security.SecurityProperties;
 import com.cyz.basic.constant.EntityConstants;
 import com.cyz.basic.enumeration.DeleteFlag;
+import com.cyz.basic.mapper.BasicMapper;
 import com.cyz.basic.service.impl.BasicServiceImplTemplate;
 import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.ouser.mapper.OuserMapper;
@@ -55,7 +56,7 @@ public class OuserService extends BasicServiceImplTemplate<Ouser> {
 	public Ouser newEntity() {
 		return new Ouser();
 	}
-	
+
 	/**
 	 * 查找数据库，当前昵称是否已存在
 	 * @param nikename
@@ -89,6 +90,10 @@ public class OuserService extends BasicServiceImplTemplate<Ouser> {
      */
     public String currentUsername(HttpServletRequest request) {
     	return request.getHeader(securityProperties.getHeader().getUser());
+    }
+    
+    public Integer currentUserId(HttpServletRequest request) {
+    	return currentUser(request).getId();
     }
     
     /**

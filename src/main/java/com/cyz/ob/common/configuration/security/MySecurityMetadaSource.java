@@ -11,23 +11,23 @@ import com.cyz.basic.config.security.access.SecurityConfig;
 import com.cyz.basic.config.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import com.cyz.basic.config.security.web.util.matcher.AntPathRequestMatcher;
 import com.cyz.basic.config.security.web.util.matcher.RequestMatcher;
-import com.cyz.ob.authority.pojo.Authority;
+import com.cyz.ob.authority.pojo.Authorities;
 import com.cyz.ob.authority.pojo.Resources;
-import com.cyz.ob.authority.service.AuthorityService;
+import com.cyz.ob.authority.service.AuthoritiesService;
 
 public class MySecurityMetadaSource extends DefaultFilterInvocationSecurityMetadataSource {
 	
-	public MySecurityMetadaSource(AuthorityService authorityService) {
+	public MySecurityMetadaSource(AuthoritiesService authorityService) {
 		super(createMap(authorityService));
 	}
 
-	private static LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> createMap(AuthorityService authorityService) {
+	private static LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> createMap(AuthoritiesService authorityService) {
 		
-		List<Authority> auths = authorityService.getAllAuthoritiesWithResources();
+		List<Authorities> auths = authorityService.getAllAuthoritiesWithResources();
 
 		LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap = new LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>>();
 		
-		for (Authority auth : auths) {
+		for (Authorities auth : auths) {
 			if (auth.getResources() == null || auth.getResources().size() == 0) {
 				continue;
 			}
