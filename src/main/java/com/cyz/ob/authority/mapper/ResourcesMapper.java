@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.cyz.basic.mapper.BasicMapper;
@@ -21,6 +22,7 @@ public interface ResourcesMapper extends BasicMapper<Resources> {
 	 * @param state
 	 * @return
 	 */
+	@Select("select re.* from resources re left join authorities au on re.auId = au.id left join authority_ouser au_ou on au.id =  where ")
     List<Resources> getModuleResourcesList(@Param("userId")Integer userId,
   		@Param("username")String username,@Param("types")String types,@Param("delflag")byte delflag,
   		@Param("state")byte state);
