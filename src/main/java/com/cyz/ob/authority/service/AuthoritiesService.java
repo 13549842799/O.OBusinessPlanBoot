@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.enumeration.StatusFlag;
-import com.cyz.basic.service.impl.BasicServiceImplTemplate;
+
 import com.cyz.ob.authority.mapper.AuthoritiesMapper;
 import com.cyz.ob.authority.pojo.Authorities;
 import com.cyz.ob.authority.pojo.Authorities.AuthoritiesBuilder;
+import com.cyz.ob.basic.entity.PageEntity;
+import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class AuthoritiesService extends BasicServiceImplTemplate<Authorities> {
+public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEntity<Authorities>> {
 	
 	@Autowired
 	private AuthoritiesMapper mapper;

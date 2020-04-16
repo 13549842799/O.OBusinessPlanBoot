@@ -183,23 +183,23 @@
         <if test="pid != null ">
         AND re.`pid` = #{pid}
         </if>
+        <if test="authId != null ">
+        AND re.`authId` = #{authId}
+        </if>
         <if test="name != null ">
-        AND re.`name` = #{name}
+        AND LOCATE(#{name}, re.`name`) > 0
         </if>
-        <if test="request_url != null ">
-        AND re.`request_url` = #{request_url}
+        <if test="displayName != null ">
+        AND LOCATE(#{displayName}, re.`displayName`) > 0
         </if>
-        <if test="style != null ">
-        AND re.`style` = #{style}
+        <if test="url != null ">
+        AND LOCATE(#{url}, re.`url`) > 0
         </if>
         <if test="type != null ">
         AND re.`type` = #{type}
         </if>
         <if test="describes != null ">
-        AND re.`describes` = #{describes}
-        </if>
-        <if test="key != null ">
-        AND re.`key` = #{key}
+        AND LOCATE(#{describes}, re.`describes`) > 0
         </if>
         <if test="locking != null ">
         AND re.`locking` = #{locking}
@@ -212,5 +212,7 @@
         </if>
     </where>
     </select>
+    
+    
 
 </mapper>

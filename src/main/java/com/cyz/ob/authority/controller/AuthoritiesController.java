@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,10 @@ import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.authority.pojo.Authorities;
 import com.cyz.ob.authority.service.AuthoritiesService;
+import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.common.constant.ResultConstant;
 import com.cyz.ob.ouser.service.impl.OuserService;
+import com.github.pagehelper.PageInfo;
 
 
 @RestController
@@ -116,7 +119,7 @@ public class AuthoritiesController extends BasicController{
 	 * @param roleId
 	 * @return
 	 */
-	 /*@RequestMapping(value="/tree.re",method=RequestMethod.GET)
+	/* @RequestMapping(value="/tree.re",method=RequestMethod.GET)
 	 public ResponseResult<Object>  treeResources(
 		HttpServletRequest request,
 		@RequestParam(value="roleId", required=true)int roleId){
@@ -126,24 +129,21 @@ public class AuthoritiesController extends BasicController{
 		List<Resources> list = resourceService.getResourceTree(queue, null);
 		list.forEach(o->System.out.println(o));
 		return response.success(list);	  
-	  }
+	  }*/
 	
-	 *//**
-	  * 获取角色拥有的权限列表
-	  * @param request
-	  * @param roleId 角色id
-	  * @return
-	  *//*
-	@GetMapping(value="/list.re")
-	public ResponseResult<List<AuthorityWithKey>> authList(
-			HttpServletRequest request, 
-			@RequestParam(value="roleId", required=true)int roleId) {
-		ResponseResult<List<AuthorityWithKey>> response = new ResponseResult<>();
+	
+	
+	@GetMapping(value="/page.re")
+	public ResponseResult<PageInfo<Authorities>> authList(
+			HttpServletRequest request,
+			Authorities authorities,
+			PageEntity<Authorities> pageParam) {
+		ResponseResult<PageInfo<Authorities>> response = new ResponseResult<>();
 		
-		List<AuthorityWithKey> list = authService.getfullList(roleId);
+		pageParam.setParams(authorities);
+		PageInfo<Authorities> page = authoritiesService.getPage(pageParam);
 		
-		
-		return response.success(list);
-	}*/
+		return response.success(page);
+	}
 	
 }

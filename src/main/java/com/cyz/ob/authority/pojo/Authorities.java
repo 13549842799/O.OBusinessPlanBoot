@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.cyz.basic.config.security.detail.SecurityAuthority;
 import com.cyz.basic.pojo.ModifyEntity;
+import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
+@EnableCheckOut
 public class Authorities extends ModifyEntity<Integer> implements SecurityAuthority {
 	
 

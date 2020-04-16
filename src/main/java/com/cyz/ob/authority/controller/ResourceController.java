@@ -23,8 +23,10 @@ import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.authority.pojo.Resources;
 import com.cyz.ob.authority.service.ResourceService;
+import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.common.constant.ResultConstant;
 import com.cyz.ob.ouser.service.impl.OuserService;
+import com.github.pagehelper.PageInfo;
 
 
 /**
@@ -62,12 +64,8 @@ public class ResourceController extends BasicController{
 		
 		Resources parent = null;
 		if (resource.getPid() != null) {
-			parent = new Resources(resource.getPid(),DeleteFlag.VALID.getCode());
-			try {
-				parent = resourceService.getById(resource.getPid());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			parent = resourceService.getById(resource.getPid());
+			
 			if (parent == null || parent.getId() == null) {
 				return response.fail(ResultConstant.NOT_EXIST_PARENT);
 			}
@@ -144,14 +142,7 @@ public class ResourceController extends BasicController{
 			return response.fail(err);
 		}
 
-		Resources old = null;
-		try {
-			old = resourceService.getById(resources.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return response.error(e.getMessage());
-		}
-
+		Resources old = resourceService.getById(resources.getId());		
 		if (old == null) {
 			return response.fail(ResultConstant.NOT_EXIST_RESOURCE);
 		}
@@ -160,12 +151,7 @@ public class ResourceController extends BasicController{
 			return response.fail(ResultConstant.RESOURCE_LOCKING);
 		}
 	
-		Resources parent = null;
-		try {
-			parent = resourceService.getById(resources.getPid());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Resources parent = resourceService.getById(resources.getPid());
 		if (parent == null) {
 			return response.fail(ResultConstant.NOT_EXIST_PARENT);
 		}
@@ -192,6 +178,32 @@ public class ResourceController extends BasicController{
 		default:
 			return response.error("更新异常");
 		}
+	  }
+	  
+	  @GetMapping("/one.re")
+	  public ResponseResult<Resources> resource(
+			  HttpServletRequest request, 
+			  @RequestParam("id") Integer id
+			  ) {
+		  
+		  ResponseResult<Resources> result = new ResponseResult<>();
+		  
+		  Resources r = resourceService.getById(id);
+		  
+		  return result.success(r);
+	  }
+	  
+	  @GetMapping("/page.re")
+	  public ResponseResult< PageInfo<Resources>> pageList(
+			  HttpServletRequest request, 
+			  PageEntity<Resources> pageParam, Resources resources
+			  ) {
+		  pageParam.setParams(resources);
+		  ResponseResult<PageInfo<Resources>> result = new ResponseResult<>();
+		  PageInfo<Resources> page = resourceService.getPage(pageParam);
+		  
+		  
+		  return result.success(page);
 	  }
 	  
 	  
