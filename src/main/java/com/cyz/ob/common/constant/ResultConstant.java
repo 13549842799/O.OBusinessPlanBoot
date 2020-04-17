@@ -62,6 +62,8 @@ public static final String PARAMETER_ERROR = "参数错误";
 	
 	public static final String PATTERN_PHONE__ERROR="手机号含有非法字符";
 	
+	public static final String RESULT_NOT_EXIST = "无数据执行";
+	
 	/**
 	 * 业务错误信息
 	 */

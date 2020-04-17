@@ -1,6 +1,7 @@
 package com.cyz.ob.authority.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +23,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyz.basic.Exception.AddErrorException;
 import com.cyz.basic.controller.BasicController;
+import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.authority.pojo.Roles;
 import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.authority.service.RolesService;
+import com.cyz.ob.basic.entity.PageEntity;
+import com.cyz.ob.common.constant.ResultConstant;
+import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
+import com.github.pagehelper.PageInfo;
 
 
 /**
@@ -41,7 +47,7 @@ import com.cyz.ob.ouser.service.impl.OuserService;
  *
  */
 @RequestMapping("/api/authority/roles")
-//@RestController
+@RestController
 public class RolesController extends BasicController{
 	
 	  @Autowired
@@ -49,6 +55,9 @@ public class RolesController extends BasicController{
 	  
 	  @Autowired
 	  private AuthoritiesService authService;
+	  
+	  @Autowired
+	  private OuserService ouserService;
 	
 	  /**
 	   * 创建角色
@@ -57,11 +66,11 @@ public class RolesController extends BasicController{
 	   * @return
 	   */
 	  @PostMapping(value="/add.do")
-	  public ResponseResult<Object>  addRole(
+	  public ResponseResult<Roles>  addRole(
 			  HttpServletRequest request,
 			  @RequestBody(required = true) Roles role){
 		  
-		ResponseResult<Object> response = new ResponseResult<>();
+		ResponseResult<Roles> response = new ResponseResult<>();
 		
 		String messageError = validUtil.validReturnFirstError(role);
 		if (messageError != null) {
@@ -126,6 +135,48 @@ public class RolesController extends BasicController{
 		
 		return response.success();
 	  }
+	  
+	  /**
+	   * 角色列表
+	   * @param request
+	   * @param creator
+	   * @param state
+	   * @return
+	   */
+	  @GetMapping(value="/page.re")
+	  public ResponseResult<PageInfo<Roles>> rolePage(
+			  HttpServletRequest request, 
+			  PageEntity<Roles> pageParam, 
+			  Roles role) {
+		  
+		  ResponseResult<PageInfo<Roles>> result = new ResponseResult<>();
+		  
+		  pageParam.setParams(role);
+		  PageInfo<Roles> page = rolesService.getPage(pageParam);
+		  
+		  return result.success(page);
+	  }
+	  
+	  @PostMapping(value="/addToUser.do")
+	  public ResponseResult<String> addRoleToUser(
+			  HttpServletRequest request,
+			  @RequestBody(required = true) AddRolesForm form) {
+		  
+		  ResponseResult<String> result = new ResponseResult<>();
+		  
+		  if (form == null || (form.getAddRoleIds() == null && form.getRemoveRoleIds() == null) || form.getUserId() == null) {
+			  return result.fail(ResultConstant.PARAMETER_REQUIRE_NULL);
+		  }
+		  
+		  Ouser user = ouserService.getById(form.getUserId());
+		  
+		  List<Roles> adds = rolesService.createByParams(form.getAddRoleIds(), DeleteFlag.VALID.getCode()),
+				  removes = rolesService.createByParams(form.getRemoveRoleIds(), DeleteFlag.DELETE.getCode());
+		    		  
+		  rolesService.addRoleToUser(adds, removes, user);
+		  
+		  return result.success();
+	  }
 	
 	  /**
 	   * 角色列表
@@ -139,6 +190,35 @@ public class RolesController extends BasicController{
 			  HttpServletRequest request) {
 		  
 		  return null;
+	  }
+	  
+	  public static final class AddRolesForm {
+		    
+		  private Integer userId;
+		  private String  addRoleIds;
+		  private String removeRoleIds;
+		  
+		public Integer getUserId() {
+			return userId;
+		}
+		public void setUserId(Integer userId) {
+			this.userId = userId;
+		}
+		public String getAddRoleIds() {
+			return addRoleIds;
+		}
+		public void setAddRoleIds(String addRoleIds) {
+			this.addRoleIds = addRoleIds;
+		}
+		public String getRemoveRoleIds() {
+			return removeRoleIds;
+		}
+		public void setRemoveRoleIds(String removeRoleIds) {
+			this.removeRoleIds = removeRoleIds;
+		}
+		
+		  
+		  
 	  }
 	  
 	  /**

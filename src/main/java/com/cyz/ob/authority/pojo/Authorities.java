@@ -5,6 +5,7 @@ import java.util.List;
 import com.cyz.basic.config.security.detail.SecurityAuthority;
 import com.cyz.basic.pojo.ModifyEntity;
 import com.cyz.basic.valid.annotation.EnableCheckOut;
+import com.cyz.basic.valid.annotation.FieldMeta;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @EnableCheckOut
@@ -15,9 +16,11 @@ public class Authorities extends ModifyEntity<Integer> implements SecurityAuthor
 	 * 
 	 */
 	private static final long serialVersionUID = 1321108800213632856L;
-
+    
+	@FieldMeta("权限名")
 	private String authName;
 	
+	@FieldMeta("显示名")
 	private String displayName;
 	
 	private String remark;
@@ -27,6 +30,19 @@ public class Authorities extends ModifyEntity<Integer> implements SecurityAuthor
 	private Ouser user;
 	
 	private List<Resources> resources;
+	
+	
+
+	public Authorities() {
+		super();
+	}
+	
+	public Authorities(Integer id, byte delflag) {
+		this.id = id;
+		this.delflag = delflag;
+	}
+
+
 
 	public String getAuthName() {
 		return authName;

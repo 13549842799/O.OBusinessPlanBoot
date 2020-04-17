@@ -3,37 +3,55 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cyz.ob.authority.mapper.RolesMapper"> 
+
+    <resultMap type="roles" id="rolesWithAuth">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="displayName" column="displayName"/>
+        <result property="describes" column="describes"/>
+        <result property="delflag" column="delflag"/>
+        <collection property="authList" ofType="authorities">
+            <id property="id" column="au_id"/>
+            <result property="authName" column="authName"/>
+            <result property="displayName" column="au_displayName"/>
+        </collection>
+    </resultMap>
     
     <sql id="base_column">
-        ro.id,ro.code,ro.sort,ro.name,ro.creator,
-        ro.createTime,ro.modifier,ro.modifierTime,ro.updateNo,
-        ro.state,ro.delflag
+        ro.id,,ro.name,ro.displayName,ro.describes,ro.delflag
+    </sql>
+    
+    <sql id="with_auth_column">
+        <include refid="base_column" />, au.id as au_id, au.authName, au.displayName as au_displayName
     </sql>
     
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO
-        role
+        roles
     (
-      code , sort, name, creator, createTime, modifier, modifierTime, describes, 
-      state, delflag
+      `name` , displayName, describes, delflag
     )    
     VALUES
     (
-     #{code}, #{sort}, #{name}, #{creator}, NOW(), #{modifier}, NOW(), #{describes},
-     #{state, jdbcType=TINYINT}, #{delflag, jdbcType=TINYINT}
+     #{name}, #{displayName}, #{describes}, #{delflag}
     )
     </insert>
+    
+    <update id="addRolesToUser" parameterType="map">
+    INSERT INTO roles_user (role_id, user_id, delflag)
+    VALUES
+    <foreach collection="list" item="l" separator=",">
+    (${l.roleId}, ${l.user.id}, ${l.delflag})
+    </foreach>
+    ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
+    </update>
    
     
 	<update id="updateFull" parameterType="roles">
-        UPDATE role SET 
-            code = #{code},
-            sort = #{sort},
-            name = #{name},
-            modifier = #{modifier},
-            modifierTime = #{modifierTime},
+        UPDATE roles SET 
+            `name` = #{name},
+            displayName = #{displayName},
             describes = #{describes},
-            state = #{state,jdbcType=TINYINT},
             delflag = #{delflag,jdbcType=TINYINT}
          WHERE id = #{id}
     </update>
@@ -42,19 +60,41 @@
     <select id="getList" resultType="roles" parameterType="roles">
         SELECT
         <include refid="base_column"/>
-        FROM role ro
+        FROM roles ro
         <where>
-          <if test="creator != null">
-            ro.creator = #{creator, jdbcType=INTEGER}
+          <trim prefixOverrides="AND">
+          <if test="name != null">
+            AND ro.`name` like cancat('%', #{name}, '%')
           </if>
-          <if test="state != null">
-            AND ro.state = #{state,jdbcType=TINYINT}
+          <if test="displayName != null">
+            AND ro.`displayName` like cancat('%', #{displayName}, '%')
           </if>
           <if test="delflag != null">
             AND ro.delflag = #{delflag, jdbcType=TINYINT}
           </if>
+          </trim>       
         </where>
-        ORDER BY sort 
+    </select>
+    
+    <select id="getRolesWithAuth" resultMap="rolesWithAuth" parameterType="map">
+    SELECT
+    <include refid="with_auth_column" />
+    FROM roles ro
+    LEFT JOIN authorities_roles au_ro ON (au_ro.role_id = ro.id AND au_ro.delfalg = #{delflag} )
+    LEFT JOIN authorities au ON (au.id = au_ro.auth_id AND au.delflag = #{delflag})
+    <where>
+	    <trim prefixOverrides="AND">
+		    <if test="id != null">
+		    AND ro.id = #{id}
+		    </if>
+		    <if test="ids != null">
+		    AND ro.id in (${ids})
+		    </if>
+		    <if test="delfalg != null">
+		    AND ro.delflag
+		    </if>
+	    </trim>
+    </where>
     </select>
     
 

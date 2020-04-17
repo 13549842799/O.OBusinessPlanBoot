@@ -92,6 +92,24 @@
             </trim>
         )
     </insert>
+    
+    <insert id="addAuthsToUser" parameterType="map">
+        INSERT INTO authorities_ouser (auth_id, user_id, role_id, delflag)
+        VALUES
+        <foreach collection="list" item="l" separator=",">
+        (#{l.id, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
+        </foreach>
+        ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
+    </insert>
+    
+    <insert id="addAuthsToRoles"  parameterType="map">
+        INSERT INTO authorities_roles (auth_id, role_id, delflag)
+        VALUES
+        <foreach collection="list" item="l" separator=",">
+        (#{l.authId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
+        </foreach>
+        ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
+    </insert>
 
     <update id="delete" >
         UPDATE authorities set delflag = #{delflag}
@@ -156,6 +174,19 @@
             </if>
         </trim>
         </where>
+    </select>
+    
+    <select id="getAllAuthoritiesByUser" resultType="authorities">
+    SELECT
+    DISTINCT au.authName
+    FROM authorities au
+    LEFT JOIN authorities_ouser au_o ON au.id = au_o.auth_id
+    WHERE
+        au_o.user_id = #{userId}
+    AND 
+        au.delflag = #{delflag}
+    AND
+        au_o.delflag = #{delflag}
     </select>
 
     <select id="getAllAuthoritiesWithResources" resultMap="AuthorityWithResMap">
