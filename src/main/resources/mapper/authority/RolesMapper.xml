@@ -10,7 +10,7 @@
         <result property="displayName" column="displayName"/>
         <result property="describes" column="describes"/>
         <result property="delflag" column="delflag"/>
-        <collection property="authList" ofType="authorities">
+        <collection property="authsList" ofType="authorities">
             <id property="id" column="au_id"/>
             <result property="authName" column="authName"/>
             <result property="displayName" column="au_displayName"/>
@@ -18,7 +18,7 @@
     </resultMap>
     
     <sql id="base_column">
-        ro.id,,ro.name,ro.displayName,ro.describes,ro.delflag
+        ro.id,ro.`name`,ro.displayName,ro.describes,ro.delflag
     </sql>
     
     <sql id="with_auth_column">
@@ -37,11 +37,11 @@
     )
     </insert>
     
-    <update id="addRolesToUser" parameterType="map">
+    <update id="addRolesToUser" >
     INSERT INTO roles_user (role_id, user_id, delflag)
     VALUES
     <foreach collection="list" item="l" separator=",">
-    (${l.roleId}, ${l.user.id}, ${l.delflag})
+    (#{l.roleId, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
     </foreach>
     ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
     </update>
@@ -55,6 +55,22 @@
             delflag = #{delflag,jdbcType=TINYINT}
          WHERE id = #{id}
     </update>
+    
+    <select id="get" parameterType="roles" resultType="roles">
+    SELECT
+    <include refid="base_column"/>
+    FROM roles ro
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null">
+        AND ro.id = #{id}
+        </if>
+        <if test="delflag != null">
+        AND ro.delflag = #{delflag}
+        </if>
+        </trim>
+    </where>
+    </select>
 	
 	
     <select id="getList" resultType="roles" parameterType="roles">
@@ -80,8 +96,8 @@
     SELECT
     <include refid="with_auth_column" />
     FROM roles ro
-    LEFT JOIN authorities_roles au_ro ON (au_ro.role_id = ro.id AND au_ro.delfalg = #{delflag} )
-    LEFT JOIN authorities au ON (au.id = au_ro.auth_id AND au.delflag = #{delflag})
+    LEFT JOIN authorities_roles au_ro ON (au_ro.role_id = ro.id AND au_ro.delflag = ${delflag} )
+    LEFT JOIN authorities au ON (au.id = au_ro.auth_id AND au.delflag = ${delflag})
     <where>
 	    <trim prefixOverrides="AND">
 		    <if test="id != null">

@@ -44,10 +44,6 @@ public class AuthoritiesController extends BasicController{
 	@Autowired
 	private RolesService rolesService;
 	
-	/*@Autowired
-	private ResourceService resourceService;*/
-	
-	
 	
 	/**
 	 * 创建权限
@@ -180,7 +176,7 @@ public class AuthoritiesController extends BasicController{
 	 * @param addAuth
 	 * @return
 	 */
-	@PostMapping("addAuthstoRole.do")
+	@PostMapping("/addAuthstoRole.do")
 	public ResponseResult<String> addAuthsToRole(
 			HttpServletRequest request,
 			@RequestBody(required=true) AddAuthsForm addAuth) {

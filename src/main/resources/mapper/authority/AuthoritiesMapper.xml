@@ -93,11 +93,11 @@
         )
     </insert>
     
-    <insert id="addAuthsToUser" parameterType="map">
+    <insert id="addAuthsToUser">
         INSERT INTO authorities_ouser (auth_id, user_id, role_id, delflag)
         VALUES
         <foreach collection="list" item="l" separator=",">
-        (#{l.id, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
+        (#{l.authID, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
         </foreach>
         ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
     </insert>

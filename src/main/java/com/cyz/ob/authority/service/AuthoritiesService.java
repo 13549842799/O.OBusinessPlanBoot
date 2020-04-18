@@ -45,7 +45,10 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
      * @param authParams
      */
     public void addAuthsToUser(List<Map<String, Object>> authParams) {
-		mapper.addAuthsToRoles(authParams);
+    	if (authParams == null || authParams.size() == 0) {
+    		return;
+    	}
+		mapper.addAuthsToUser(authParams);
 	}
     
     /**

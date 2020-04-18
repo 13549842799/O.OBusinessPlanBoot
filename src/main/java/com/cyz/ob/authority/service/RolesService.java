@@ -48,7 +48,6 @@ public class RolesService extends PageServiceTemplate<Roles, PageEntity<Roles>> 
 		all.forEach(a-> 
 			params.add(ParamsBuilder.create().roleId(a.getId()).userId(user.getId()).delflag(a.getDelflag()).build())
 		);
-		System.out.println(params);
 		//更新用户和角色关系
 		mapper.addRolesToUser(params);
 				
@@ -73,7 +72,7 @@ public class RolesService extends PageServiceTemplate<Roles, PageEntity<Roles>> 
 			return ap;
 		}
 		String ids = roles.stream().map(r-> String.valueOf(r.getId())).collect(Collectors.joining(","));
-		roles = mapper.getRolesWithAuth(ParamsBuilder.create().ids(ids).build());
+		roles = mapper.getRolesWithAuth(ParamsBuilder.create().ids(ids).delflag(DeleteFlag.VALID.getCode()).build());
 		for (Roles role : roles) {
 			if (role.getAuthsList() == null || role.getAuthsList().size() == 0) {
 				continue;
