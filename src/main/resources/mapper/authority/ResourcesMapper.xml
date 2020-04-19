@@ -9,6 +9,7 @@
         <result property="name" column="name"/>
         <result property="displayName" column="displayName"/>
         <result property="url" column="url"/>
+        <result property="withParam" column="withParam"/>
         <result property="type" column="type"/>
         <result property="describes" column="describes"/>
         <result property="locking" column="locking"/>
@@ -17,7 +18,7 @@
     </resultMap>
 
      <sql id="base_column">
-        re.id,re.pid,re.authId,re.name,re.displayName,re.url,re.type
+        re.id,re.pid,re.authId,re.name,re.displayName,re.url,re.withParam,re.type
        ,re.describes,re.locking,re.state,re.delflag
      </sql>
      
@@ -42,6 +43,9 @@
                 </if>
                 <if test="url != null ">
                 url,
+                </if>
+                <if test="withParam != null">
+                withParam,
                 </if>
                 <if test="type != null ">
                 type,
@@ -80,6 +84,9 @@
                 <if test="url != null ">
                 #{url},
                 </if>
+                <if test="withParam != null">
+                #{withParam},
+                </if>
                 <if test="type != null ">
                 #{type},
                 </if>
@@ -110,14 +117,20 @@
                 <if test="pid != null ">
                 pid = #{pid},
                 </if>
+                <if test="authId != null">
+                authId = #{authId}
+                </if>
                 <if test="name != null ">
                 name = #{name},
                 </if>
-                <if test="request_url != null ">
-                request_url = #{request_url},
+                <if test="displayName != null ">
+                displayName = #{displayName},
                 </if>
-                <if test="icon != null ">
-                icon = #{icon},
+                <if test="url != null ">
+                url = #{url},
+                </if>
+                <if test="withParam != null">
+                withParam = #{withParam}
                 </if>
                 <if test="type != null ">
                 type = #{type},
@@ -125,8 +138,8 @@
                 <if test="describes != null ">
                 describes = #{describes},
                 </if>
-                <if test="key != null ">
-                `key` = #{key},
+                <if test="locking != null">
+                locking = #{locking}
                 </if>
                 <if test="state != null ">
                 state = #{state,jdbcType=TINYINT},
@@ -142,11 +155,9 @@
         UPDATE resource SET 
             pid = #{pid},
             name = #{name},
-            request_url = #{request_url},
             style = #{style},
             type = #{type},
             describes = #{describes},
-            `key` = #{key},
             state = #{state,jdbcType=TINYINT},
             delflag = #{delflag,jdbcType=TINYINT}
          WHERE id = #{id}

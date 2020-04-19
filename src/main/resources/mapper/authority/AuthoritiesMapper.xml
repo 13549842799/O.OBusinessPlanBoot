@@ -176,6 +176,15 @@
         </where>
     </select>
     
+    <select id="getSimpleAuths" parameterType="authorities" resultType="authorities">
+    SELECT
+        au.id, au.`name`, au.displayName
+    FFROM
+        authorities au
+    where
+        delflag = #{delflag}
+    </select>
+    
     <select id="getAllAuthoritiesByUser" resultType="authorities">
     SELECT
     DISTINCT au.authName

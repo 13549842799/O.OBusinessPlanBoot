@@ -42,5 +42,7 @@ public interface AuthoritiesMapper extends BasicMapper<Authorities> {
 	List<Authorities> searchListById(@Param("ids") String ids, @Param("delflag") byte delfalg);
 	
 	List<Authorities> getAllAuthoritiesByUser(@Param("userId")Integer userId, @Param("delflag")byte delflag);
+    
+	List<Authorities> getSimpleAuths(Authorities authorities);
 
 }

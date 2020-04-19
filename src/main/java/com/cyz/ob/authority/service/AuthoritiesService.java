@@ -27,6 +27,18 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
 	@Autowired
 	private AuthoritiesMapper mapper;
 	
+	@Override
+	public Authorities newEntity() {
+		
+		return new Authorities();
+	}
+
+	@Override
+	public Authorities entity(String id, byte delflag) {
+		
+		return new Authorities(Integer.parseInt(id), delflag);
+	}
+	
 	/**
 	 * 为用户添加新的权限，并移除指定权限
 	 * @param auths
@@ -83,16 +95,9 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
 		return mapper.getAllAuthoritiesWithResources(DeleteFlag.VALID.getCode(), StatusFlag.ENABLE.getCode());
 	}
 
-	@Override
-	public Authorities newEntity() {
+	public List<Authorities> getSimpleList(Authorities authorities) {
 		
-		return new Authorities();
-	}
-
-	@Override
-	public Authorities entity(String id, byte delflag) {
-		
-		return new Authorities(Integer.parseInt(id), delflag);
+		return mapper.getSimpleAuths(authorities);
 	}
 	
 	

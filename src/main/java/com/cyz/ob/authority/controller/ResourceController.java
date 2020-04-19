@@ -194,15 +194,14 @@ public class ResourceController extends BasicController{
 	  }
 	  
 	  @GetMapping("/page.re")
-	  public ResponseResult< PageInfo<Resources>> pageList(
+	  public ResponseResult<PageInfo<Resources>> pageList(
 			  HttpServletRequest request, 
 			  PageEntity<Resources> pageParam, Resources resources
 			  ) {
 		  pageParam.setParams(resources);
 		  ResponseResult<PageInfo<Resources>> result = new ResponseResult<>();
 		  PageInfo<Resources> page = resourceService.getPage(pageParam);
-		  
-		  
+
 		  return result.success(page);
 	  }
 	  

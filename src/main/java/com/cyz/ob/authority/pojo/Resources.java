@@ -32,9 +32,12 @@ public class Resources extends ModifyEntity<Integer> {
 	
 	private String url;
 	
+	private Byte withParam;
+	
 	@FieldMeta(name="资源类型")
 	private Byte type; //1级菜单 2-菜单 3-接口
 	
+	@Deprecated
 	private String path;
 	
 	private String describes;
@@ -114,7 +117,15 @@ public class Resources extends ModifyEntity<Integer> {
 		this.url = url;
 	}
 
+    
 
+	public Byte getWithParam() {
+		return withParam;
+	}
+
+	public void setWithParam(Byte withParam) {
+		this.withParam = withParam;
+	}
 
 	public Byte getType() {
 		return type;
@@ -208,5 +219,22 @@ public class Resources extends ModifyEntity<Integer> {
 		}
 		childs.forEach(o->o.setPath(this.getId()+","+o.getId()));
 	}
+	
+	public String typeStr() {
+		if (type == null) {
+			return "";
+		}
+		switch (type) {
+		case TOPMENU:
+			return "一级模块";
+		case SECONDMENU:
+			return "二级模块";
+		case INTERFACE:
+			return "接口";
+		default:
+			return "";
+		}
+	}
+	
 
 }

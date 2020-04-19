@@ -119,7 +119,7 @@ public class AuthoritiesController extends BasicController{
 	}
 	
 	@GetMapping(value="/page.re")
-	public ResponseResult<PageInfo<Authorities>> authList(
+	public ResponseResult<PageInfo<Authorities>> authsPage(
 			HttpServletRequest request,
 			Authorities authorities,
 			PageEntity<Authorities> pageParam) {
@@ -129,6 +129,17 @@ public class AuthoritiesController extends BasicController{
 		PageInfo<Authorities> page = authoritiesService.getPage(pageParam);
 		
 		return response.success(page);
+	}
+	
+	@GetMapping(value="/simpleList.re")
+	public ResponseResult<List<Authorities>> authList(
+			HttpServletRequest request,
+			Authorities authorities) {
+		ResponseResult<List<Authorities>> response = new ResponseResult<>();
+		
+		List<Authorities> auths = authoritiesService.getSimpleList(authorities);
+		
+		return response.success(auths);
 	}
 	
 	@GetMapping("one.re")
