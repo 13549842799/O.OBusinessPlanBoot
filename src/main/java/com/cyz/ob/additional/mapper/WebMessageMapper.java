@@ -1,4 +1,4 @@
-package com.cyz.ob.ouser.mapper;
+package com.cyz.ob.additional.mapper;
 
 import java.util.List;
 

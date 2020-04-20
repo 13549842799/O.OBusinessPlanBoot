@@ -27,6 +27,10 @@
         ou.id,ou.username,ou.password,ou.nikename,ou.delflag
      </sql>
      
+     <sql id="base_column_no_password">
+        ou.id,ou.username,ou.nikename,ou.delflag
+     </sql>
+     
      <select id="get" resultMap="OuserMap">
      select 
      <include refid="base_column" />
@@ -43,8 +47,23 @@
      </where>
      </select>
      
-     <select id="getList" resultMap="OuserMap">
-     select * from ouser
+     <select id="getList" resultMap="OuserMap" parameterType="ouser">
+     SELECT
+     <include refid="base_column_no_password"/>
+     FROM ouser ou
+     <where>
+         <trim prefixOverrides="AND">
+         <if test="id != null">
+         AND id = #{id}
+         </if>
+         <if test="username != null">
+         AND LOCATE(#{username}, ou.`username`) > 0
+         </if>
+         <if test="nikename != null">
+         AND LOCATE(#{nikename}, ou.`nikename`) > 0
+         </if>
+         </trim>
+     </where>
      </select>
      
      <update id="update" parameterType="ouser">

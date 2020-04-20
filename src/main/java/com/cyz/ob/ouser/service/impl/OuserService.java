@@ -8,20 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.cyz.basic.Exception.AddErrorException;
 import com.cyz.basic.config.security.SecurityProperties;
 import com.cyz.basic.constant.EntityConstants;
 import com.cyz.basic.enumeration.DeleteFlag;
-import com.cyz.basic.mapper.BasicMapper;
-import com.cyz.basic.service.impl.BasicServiceImplTemplate;
 import com.cyz.basic.util.StrUtil;
+import com.cyz.ob.basic.entity.PageEntity;
+import com.cyz.ob.basic.service.PageServiceTemplate;
 import com.cyz.ob.ouser.mapper.OuserMapper;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @Service
-public class OuserService extends BasicServiceImplTemplate<Ouser> {
+public class OuserService extends PageServiceTemplate<Ouser, PageEntity<Ouser>> {
 	
 	@Autowired
 	private OuserMapper mapper;

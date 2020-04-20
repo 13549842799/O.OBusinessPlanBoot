@@ -19,8 +19,8 @@ import com.cyz.basic.config.security.web.util.matcher.AntPathRequestMatcher;
 import com.cyz.basic.config.security.web.util.matcher.RequestMatcher;
 import com.cyz.basic.util.HttpUtil;
 import com.cyz.basic.util.HttpUtil.RespParams;
+import com.cyz.ob.additional.service.WebMessageService;
 import com.cyz.ob.ouser.pojo.entity.WebMessage;
-import com.cyz.ob.ouser.service.impl.WebMessageService;
 
 public class WebMessageAuthenticationFilter implements Filter{
 	

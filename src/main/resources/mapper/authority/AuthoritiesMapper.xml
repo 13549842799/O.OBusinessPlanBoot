@@ -113,7 +113,7 @@
 
     <update id="delete" >
         UPDATE authorities set delflag = #{delflag}
-         WHERE id = #{ id })
+         WHERE id = #{ id }
     </update>
 
     <select id="get" resultType="authorities" parameterType="authorities">

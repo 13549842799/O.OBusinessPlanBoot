@@ -13,10 +13,10 @@ import com.cyz.basic.config.security.config.annotation.web.builders.HttpSecurity
 import com.cyz.basic.config.security.config.annotation.web.configuration.EnableWebSecurity;
 import com.cyz.basic.config.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import com.cyz.basic.config.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.cyz.ob.additional.service.WebMessageService;
 import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.common.filter.WebMessageAuthenticationFilter;
 import com.cyz.ob.ouser.service.impl.OuserService;
-import com.cyz.ob.ouser.service.impl.WebMessageService;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfig{

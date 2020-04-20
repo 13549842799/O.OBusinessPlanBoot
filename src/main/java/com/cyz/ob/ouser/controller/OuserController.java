@@ -1,6 +1,5 @@
 package com.cyz.ob.ouser.controller;
 
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,11 @@ import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.additional.pojo.entity.Msg;
 import com.cyz.ob.additional.service.MsgService;
+import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.common.constant.ResultConstant;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
+import com.github.pagehelper.PageInfo;
 
 
 /**
@@ -137,21 +138,33 @@ public class OuserController extends BasicController{
 	 public ResponseResult<Object> alterNikeName(
 		HttpServletRequest request,@RequestBody Ouser user){
 		 
-	     ResponseResult<Object> response = new ResponseResult<>();
-         if (user == null  || StrUtil.isEmpty(user.getNikename())) {
-				return response.error(ResultConstant.PARAMETER_ERROR);
-			}
-          String username = service.currentUsername(request);
-          if (service.checkNikenameExist(user.getNikename())) {
-				return response.fail("此昵称已存在");
-			} 
-          Ouser cacheUser = service.getSimpleByUsername(username);
-          cacheUser.setNikename(user.getNikename());
-          if (service.update(cacheUser) == 1) {              
-				return response.success();
-			} 
-		    return response.error("未知错误");
+	    ResponseResult<Object> response = new ResponseResult<>();
+        if (user == null  || StrUtil.isEmpty(user.getNikename())) {
+			return response.error(ResultConstant.PARAMETER_ERROR);
+	    }
+        String username = service.currentUsername(request);
+        if (service.checkNikenameExist(user.getNikename())) {
+			return response.fail("此昵称已存在");
+	    } 
+        Ouser cacheUser = service.getSimpleByUsername(username);
+        cacheUser.setNikename(user.getNikename());
+        if (service.update(cacheUser) == 1) {              
+		    return response.success();
+	    } 
+		return response.error("未知错误");
 		   
-	   }
+	}
+	
+	@GetMapping("/page.re")
+	public ResponseResult<PageInfo<Ouser>> pages(HttpServletRequest request,
+		Ouser ouser,
+		PageEntity<Ouser> pageParam) {
+		ResponseResult<PageInfo<Ouser>> result = new ResponseResult<>();
+		
+		pageParam.setParams(ouser);
+		PageInfo<Ouser> page = service.getPage(pageParam);
+		
+		return result.success(page);
+	} 
 
 }

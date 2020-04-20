@@ -46,6 +46,9 @@
     ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
     </update>
    
+    <update id="delete" parameterType="roles">
+    UPDATE roles SET delflag = #{delflag} WHERE id = #{id}
+    </update>
     
 	<update id="updateFull" parameterType="roles">
         UPDATE roles SET 
