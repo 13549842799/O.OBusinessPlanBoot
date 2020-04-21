@@ -166,5 +166,14 @@ public class OuserController extends BasicController{
 		
 		return result.success(page);
 	} 
+	
+	@GetMapping(value="/loginUser.re")
+    public ResponseResult<Ouser> searchLoginUser(HttpServletRequest request){
+	    ResponseResult<Ouser> response = new ResponseResult<>();
+	    Ouser user = service.currentUser(request);
+	    user.setPassword(null);
+	    return response.success(user);
+	   
+    }
 
 }
