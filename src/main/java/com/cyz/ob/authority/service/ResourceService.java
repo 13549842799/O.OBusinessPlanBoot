@@ -33,10 +33,9 @@ public class ResourceService extends PageServiceTemplate<Resources, PageEntity<R
 	 * @param username
 	 * @return
 	 */
-    public List<Resources> getResourcesForUser(Integer userId,String username) {
+    public List<Resources> getResourcesForUser(Integer userId) {
 		
-		List<Resources> list = mapper.getModuleResourcesList
-				(userId,username,Resources.TOPMENU + "," + Resources.SECONDMENU, DeleteFlag.VALID.getCode(),
+		List<Resources> list = mapper.getModuleResourcesList(userId,Resources.TOPMENU + "," + Resources.SECONDMENU, DeleteFlag.VALID.getCode(),
 						StatusFlag.ENABLE.getCode());
 		
 		return list;

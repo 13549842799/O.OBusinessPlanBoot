@@ -49,11 +49,11 @@ public class WebMessageAuthenticationFilter implements Filter{
 		logger.info(" begin run the WebMessageAuthenticationFilter ");
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-		if (!requiresAuthentication(request, response)) {
+		if (!requiresAuthentication(request, response) || request.getMethod().equals("OPTIONS")) {
 			chain.doFilter(request, response);
 			return;
 		}
-		
+		System.out.println(request.getParameter("code"));
 		WebMessage web = service.getByCode(request.getParameter("code"));
 		if (web == null) {
 			logger.info(" it must neet the code when you check then WebMessage ");

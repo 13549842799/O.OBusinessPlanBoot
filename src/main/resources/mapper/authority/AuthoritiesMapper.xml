@@ -178,8 +178,8 @@
     
     <select id="getSimpleAuths" parameterType="authorities" resultType="authorities">
     SELECT
-        au.id, au.`name`, au.displayName
-    FFROM
+        au.id, au.`authName`, au.displayName
+    FROM
         authorities au
     where
         delflag = #{delflag}

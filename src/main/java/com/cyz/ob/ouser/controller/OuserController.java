@@ -167,7 +167,7 @@ public class OuserController extends BasicController{
 		return result.success(page);
 	} 
 	
-	//@GetMapping(value="/loginUser.re")
+	@GetMapping(value="/loginUser.re")
     public ResponseResult<Ouser> searchLoginUser(HttpServletRequest request){
 	    ResponseResult<Ouser> response = new ResponseResult<>();
 	    Ouser user = service.currentUser(request);
@@ -176,12 +176,11 @@ public class OuserController extends BasicController{
 	   
     }
 	
-	@GetMapping(value="/loginUser.re")
-    public ResponseResult<Ouser> test(HttpServletRequest request){
-	    ResponseResult<Ouser> response = new ResponseResult<>();
-	    Ouser user = new Ouser();
-	    user.setPassword(null);
-	    return response.success(user);
+	
+	@GetMapping(value="/login")
+    public ResponseResult<Ouser> l(HttpServletRequest request){
+		ResponseResult<Ouser> response = new ResponseResult<>();
+	    return response.success();
 	   
     }
 

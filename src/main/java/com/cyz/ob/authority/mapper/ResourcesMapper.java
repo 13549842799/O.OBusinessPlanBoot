@@ -24,10 +24,10 @@ public interface ResourcesMapper extends BasicMapper<Resources> {
 	 */
 	@Select("select re.id, re.pid, re.`name`, re.displayName, re.url "
 			+ "from resources re left join authorities au on re.authId = au.id left join authorities_ouser au_ou on au.id = au_ou.auth_id"
-			+ " left join ouser ou on au_ou.user_id = ou.id where ou.id = IFNULL(#{userId}, ou.id) and ou.username = IFNULL(#{username}, ou.username)"
-			+ " and re.`type` in (#{types}) and re.delflag = #{delflag} and au.delflag = #{delflag} and au_ou.delflag = #{delflag} and re.`state` = #{state}")
+			+ " left join ouser ou on au_ou.user_id = ou.id where ou.id = #{userId} "
+			+ " and re.`type` in (${types}) and re.delflag = #{delflag} and au.delflag = #{delflag} and au_ou.delflag = #{delflag} and re.`state` = #{state}")
     List<Resources> getModuleResourcesList(@Param("userId")Integer userId,
-  		@Param("username")String username,@Param("types")String types,@Param("delflag")byte delflag,
+  		@Param("types")String types,@Param("delflag")byte delflag,
   		@Param("state")byte state);
     
     @Update("update resources set state = IF(state = 0, #{enable}, #{unable}) where id = #{id}")

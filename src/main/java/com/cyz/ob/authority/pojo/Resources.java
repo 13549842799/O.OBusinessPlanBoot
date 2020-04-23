@@ -220,7 +220,7 @@ public class Resources extends ModifyEntity<Integer> {
 		childs.forEach(o->o.setPath(this.getId()+","+o.getId()));
 	}
 	
-	public String typeStr() {
+	public String getTypeStr() {
 		if (type == null) {
 			return "";
 		}

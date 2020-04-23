@@ -205,6 +205,15 @@ public class ResourceController extends BasicController{
 		  return result.success(page);
 	  }
 	  
+	  @GetMapping("/list.re")
+	  public ResponseResult<List<Resources>> list(HttpServletRequest request, Resources resources) {
+		 
+		  ResponseResult<List<Resources>> result = new ResponseResult<>();
+		  List<Resources> list = resourceService.getList(resources);
+
+		  return result.success(list);
+	  }
+	  
 	  
 	  /**
 	   * 获取树形格式的资源列表
@@ -246,8 +255,8 @@ public class ResourceController extends BasicController{
 		  ResponseResult<Object> response = new ResponseResult<>();
 		  
 		  try {
-			String username = ouserService.currentUsername(request);
-			List<Resources> resources = resourceService.getResourcesForUser(null, username);
+			Integer userId = ouserService.currentUserId(request);
+			List<Resources> resources = resourceService.getResourcesForUser(userId);
 			return response.success(resourceService.getResourceTree(resources, null));
 		  }  catch (Exception e) {
 			e.printStackTrace();

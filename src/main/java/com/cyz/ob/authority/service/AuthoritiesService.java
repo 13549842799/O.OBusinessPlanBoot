@@ -96,7 +96,8 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
 	}
 
 	public List<Authorities> getSimpleList(Authorities authorities) {
-		
+		authorities = authorities != null ? authorities : new Authorities();
+		authorities.setDelflag(DeleteFlag.VALID.getCode());
 		return mapper.getSimpleAuths(authorities);
 	}
 	
