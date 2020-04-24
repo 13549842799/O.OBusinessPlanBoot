@@ -11,15 +11,62 @@
         <result property="url" column="url"/>
         <result property="withParam" column="withParam"/>
         <result property="type" column="type"/>
+        <result property="sort" column="sort"/>
         <result property="describes" column="describes"/>
         <result property="locking" column="locking"/>
         <result property="state" column="state"/>
         <result property="delflag" column="delflag"/>
     </resultMap>
+    
+    <resultMap type="resources" id="AdditionMap" extends="ResourceMap">
+    
+    </resultMap>
 
      <sql id="base_column">
         re.id,re.pid,re.authId,re.name,re.displayName,re.url,re.withParam,re.type
-       ,re.describes,re.locking,re.state,re.delflag
+       ,re.describes,re.sort,re.locking,re.state,re.delflag
+     </sql>
+     
+     <sql id="addition_column">
+     <include refid="base_column" />
+     </sql>
+     
+     <sql id="list_params">
+     <where>
+        <if test="id != null ">
+        AND re.`id` = #{id}
+        </if>
+        <if test="pid != null ">
+        AND re.`pid` = #{pid}
+        </if>
+        <if test="authId != null ">
+        AND re.`authId` = #{authId}
+        </if>
+        <if test="name != null ">
+        AND LOCATE(#{name}, re.`name`) > 0
+        </if>
+        <if test="displayName != null ">
+        AND LOCATE(#{displayName}, re.`displayName`) > 0
+        </if>
+        <if test="url != null ">
+        AND LOCATE(#{url}, re.`url`) > 0
+        </if>
+        <if test="type != null ">
+        AND re.`type` = #{type}
+        </if>
+        <if test="describes != null ">
+        AND LOCATE(#{describes}, re.`describes`) > 0
+        </if>
+        <if test="locking != null ">
+        AND re.`locking` = #{locking}
+        </if>
+        <if test="state != null ">
+        AND re.`state` = #{state,jdbcType=TINYINT}
+        </if>
+        <if test="delflag != null ">
+        AND re.`delflag` = #{delflag,jdbcType=TINYINT}
+        </if>
+    </where>
      </sql>
      
      <insert id="add" useGeneratedKeys="true" keyProperty="id">
@@ -49,6 +96,9 @@
                 </if>
                 <if test="type != null ">
                 type,
+                </if>
+                <if test="sort != null ">
+                sort,
                 </if>
                 <if test="describes != null ">
                 describes,
@@ -89,6 +139,9 @@
                 </if>
                 <if test="type != null ">
                 #{type},
+                </if>
+                <if test="sort != null ">
+                #{sort},
                 </if>
                 <if test="describes != null ">
                 #{describes},
@@ -134,6 +187,9 @@
                 </if>
                 <if test="type != null ">
                 type = #{type},
+                </if>
+                <if test="sort != null ">
+                sort = #{sort},
                 </if>
                 <if test="describes != null ">
                 describes = #{describes},
@@ -183,47 +239,18 @@
         
     </select>
     
-    <select id="getList" resultType="resources" parameterType="resources">
+    <select id="getList" resultMap="AdditionMap" parameterType="resources">
         SELECT 
-        <include refid="base_column"/>
+        <include refid="addition_column"/>
         FROM resources re
-    <where>
-        <if test="id != null ">
-        AND re.`id` = #{id}
-        </if>
-        <if test="pid != null ">
-        AND re.`pid` = #{pid}
-        </if>
-        <if test="authId != null ">
-        AND re.`authId` = #{authId}
-        </if>
-        <if test="name != null ">
-        AND LOCATE(#{name}, re.`name`) > 0
-        </if>
-        <if test="displayName != null ">
-        AND LOCATE(#{displayName}, re.`displayName`) > 0
-        </if>
-        <if test="url != null ">
-        AND LOCATE(#{url}, re.`url`) > 0
-        </if>
-        <if test="type != null ">
-        AND re.`type` = #{type}
-        </if>
-        <if test="describes != null ">
-        AND LOCATE(#{describes}, re.`describes`) > 0
-        </if>
-        <if test="locking != null ">
-        AND re.`locking` = #{locking}
-        </if>
-        <if test="state != null ">
-        AND re.`state` = #{state,jdbcType=TINYINT}
-        </if>
-        <if test="delflag != null ">
-        AND re.`delflag` = #{delflag,jdbcType=TINYINT}
-        </if>
-    </where>
+    <include refid="list_params" />
     </select>
     
-    
+    <select id="getSimpleList" parameterType="resources" resultType="resources" >
+    SELECT 
+        re.`name`,re.displayName, re.url, re.type
+    FROM resources re
+    <include refid="list_params" />
+    </select>
 
 </mapper>

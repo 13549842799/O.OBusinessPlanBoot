@@ -87,4 +87,11 @@ public class ResourceService extends PageServiceTemplate<Resources, PageEntity<R
 		return !(mapper.state(id,StatusFlag.ENABLE.getCode(),StatusFlag.DISABLE.getCode()) == 0);
 	}
 
+	public List<Resources> getSimpleList(Resources resources) {
+		
+		resources.setDelflag(DeleteFlag.VALID.getCode());
+		
+		return mapper.getSimpleList(resources);
+	}
+
 }

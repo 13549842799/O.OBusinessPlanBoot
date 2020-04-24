@@ -166,14 +166,6 @@ public class ResourceController extends BasicController{
 		case 0:			
 			return response.fail("更新失败");
         case 1:	
-        	//如果改变了父级，则维护子级的路径,并且存在子级，则返回树形结构的子级
-        	/*if (resources.getPid() != old.getPid() ) {				
-        		Resources params = new Resources();
-        		params.setDelflag(DeleteFlag.VALID.getCode());
-        		List<Resources> childs = resourceService.getList(params);
-        		Queue<Resources> queue = new LinkedList<>(childs);
-        		resources.setChilds(resourceService.getResourceTree(queue, resources));
-			}*/
 			return response.success(resources);
 		default:
 			return response.error("更新异常");
@@ -206,10 +198,9 @@ public class ResourceController extends BasicController{
 	  }
 	  
 	  @GetMapping("/list.re")
-	  public ResponseResult<List<Resources>> list(HttpServletRequest request, Resources resources) {
-		 
+	  public ResponseResult<List<Resources>> list(HttpServletRequest request, Resources resources) {		 
 		  ResponseResult<List<Resources>> result = new ResponseResult<>();
-		  List<Resources> list = resourceService.getList(resources);
+		  List<Resources> list = resourceService.getSimpleList(resources);
 
 		  return result.success(list);
 	  }

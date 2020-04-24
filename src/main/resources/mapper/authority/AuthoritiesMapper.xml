@@ -18,6 +18,7 @@
     <resultMap type="authorities" id="AuthorityWithResMap" extends="AuthorityMap">
         <collection property="resources" ofType="resources">
             <id property="id" column="reid"/>
+            <result property="displayName" column="reDisplayName"/>
 	        <result property="url" column="url"/>
         </collection>
     </resultMap>
@@ -83,6 +84,9 @@
                 <if test="creator != null ">
                 #{creator},
                 </if>
+                 <if test="createTime != null ">
+                #{createTime},
+                </if>
                 <if test="modify != null ">
                 #{modify},
                 </if>
@@ -114,6 +118,30 @@
     <update id="delete" >
         UPDATE authorities set delflag = #{delflag}
          WHERE id = #{ id }
+    </update>
+    
+    <update id="update" parameterType="authorities">
+        UPDATE authorities 
+        SET 
+        <trim suffixOverrides=",">
+        <if test="authName != null">
+        authName = #{authName},
+        </if>
+        <if test="displayName != null">
+        displayName = #{displayName},
+        </if>
+        <if test="authName != null">
+        remark = #{remark},
+        </if>
+        <if test="modify != null">
+        modify = #{modify},
+        </if>
+        <if test="modifyTime != null">
+        modifyTime = #{modifyTime},
+        </if>
+        </trim>
+        WHERE
+            id = #{id}
     </update>
 
     <select id="get" resultType="authorities" parameterType="authorities">

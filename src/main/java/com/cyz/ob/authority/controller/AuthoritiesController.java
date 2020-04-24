@@ -61,7 +61,8 @@ public class AuthoritiesController extends BasicController{
 		if (errorMessage != null) {
 			return response.fail(errorMessage);
 		}
-		
+		authorities.setId(ouserService.currentUserId(request));
+		authorities.setCreateTime(LocalDateTime.now());
 		authoritiesService.add(authorities, Integer.class);
 		
 		return response.success(authorities);

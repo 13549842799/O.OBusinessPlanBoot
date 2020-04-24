@@ -42,6 +42,8 @@ public class Resources extends ModifyEntity<Integer> {
 	
 	private String describes;
 	
+	private Integer sort;
+	
 	@FieldMeta(name="锁定", notNull=false, max="0", maxMess="锁定的资源无法修改")
 	private Byte locking;
 	
@@ -196,6 +198,14 @@ public class Resources extends ModifyEntity<Integer> {
 	}
 	
 	
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
 
 	public List<Resources> getChilds() {
 		return childs;

@@ -32,4 +32,11 @@ public interface ResourcesMapper extends BasicMapper<Resources> {
     
     @Update("update resources set state = IF(state = 0, #{enable}, #{unable}) where id = #{id}")
     int state(@Param("id") int id, @Param("enable") byte enable, @Param("unable")byte unable);
+
+    /**
+     * 
+     * @param resources
+     * @return
+     */
+	List<Resources> getSimpleList(Resources resources);
 }
