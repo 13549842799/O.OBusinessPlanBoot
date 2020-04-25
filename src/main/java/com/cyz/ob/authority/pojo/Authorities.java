@@ -3,13 +3,13 @@ package com.cyz.ob.authority.pojo;
 import java.util.List;
 
 import com.cyz.basic.config.security.detail.SecurityAuthority;
-import com.cyz.basic.pojo.ModifyEntity;
+import com.cyz.basic.pojo.ModifierEntity;
 import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.basic.valid.annotation.FieldMeta;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @EnableCheckOut
-public class Authorities extends ModifyEntity<Integer> implements SecurityAuthority {
+public class Authorities extends ModifierEntity<Integer> implements SecurityAuthority {
 	
 
 	/**

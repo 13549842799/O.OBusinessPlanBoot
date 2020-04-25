@@ -2,12 +2,12 @@ package com.cyz.ob.authority.pojo;
 
 import java.util.List;
 
-import com.cyz.basic.pojo.ModifyEntity;
+import com.cyz.basic.pojo.ModifierEntity;
 import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.basic.valid.annotation.FieldMeta;
 
 @EnableCheckOut
-public class Resources extends ModifyEntity<Integer> {
+public class Resources extends ModifierEntity<Integer> {
 	
 	/**
 	 * 

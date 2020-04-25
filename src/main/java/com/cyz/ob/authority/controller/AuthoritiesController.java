@@ -107,8 +107,7 @@ public class AuthoritiesController extends BasicController{
 		}
 		
 		auth.setDelflag(DeleteFlag.VALID.getCode());
-		auth.setModify(ouserService.currentUserId(request));
-		auth.setModifyTime(LocalDateTime.now());
+		auth.update(ouserService.currentUserId(request));
 		switch (authoritiesService.update(auth)) {
 		case 1:
 			return response.success(auth);
