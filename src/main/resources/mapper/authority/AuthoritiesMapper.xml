@@ -10,7 +10,7 @@
         <result property="sort" column="sort"/>
         <result property="creator" column="creator"/>
         <result property="createTime" column="createTime"/>
-        <result property="modify" column="modify"/>
+        <result property="modifier" column="modifier"/>
         <result property="modifyTime" column="modifyTime"/>
         <result property="delflag" column="delflag"/>
     </resultMap>
@@ -24,7 +24,7 @@
     </resultMap>
 
      <sql id="base_column">
-        au.id,au.authName,au.displayName,au.remark,au.`sort`,au.creator, au.createTime, au.modify, au.modifyTime, au.delflag
+        au.id,au.authName,au.displayName,au.remark,au.`sort`,au.creator, au.createTime, au.modifier, au.modifyTime, au.delflag
      </sql>
      
      <sql id="res_column">
@@ -56,8 +56,8 @@
                 <if test="createTime != null ">
                 createTime,
                 </if>
-                <if test="modify != null ">
-                modify,
+                <if test="modifier != null ">
+                modifier,
                 </if>
                 <if test="modifyTime != null ">
                 modifyTime,
@@ -87,8 +87,8 @@
                  <if test="createTime != null ">
                 #{createTime},
                 </if>
-                <if test="modify != null ">
-                #{modify},
+                <if test="modifier != null ">
+                #{modifier},
                 </if>
                 <if test="modifyTime != null ">
                 #{modifyTime},
@@ -133,8 +133,8 @@
         <if test="authName != null">
         remark = #{remark},
         </if>
-        <if test="modify != null">
-        modify = #{modify},
+        <if test="modifier != null">
+        modifier = #{modify},
         </if>
         <if test="modifyTime != null">
         modifyTime = #{modifyTime},
@@ -209,8 +209,17 @@
         au.id, au.`authName`, au.displayName
     FROM
         authorities au
+    <if test="roleId != null">
+    LEFT JOIN authorities_roles au_ro ON ( au.id = au_ro.auth_id AND au_ro.delflag = #{delflag} )
+    </if>
     where
-        delflag = #{delflag}
+    <if test="id != null">
+    au.id = #{id} AND 
+    </if>
+    <if test="roleId != null">
+    au_ro.role_id = #{roleId} AND
+    </if>
+    au.delflag = #{delflag}
     </select>
     
     <select id="getAllAuthoritiesByUser" resultType="authorities">

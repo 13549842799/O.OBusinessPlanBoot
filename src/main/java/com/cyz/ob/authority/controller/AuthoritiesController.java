@@ -1,7 +1,6 @@
 package com.cyz.ob.authority.controller;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.authority.pojo.Authorities;
+import com.cyz.ob.authority.pojo.AuthoritiesForm;
 import com.cyz.ob.authority.pojo.Roles;
 import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.authority.service.RolesService;
@@ -61,7 +61,7 @@ public class AuthoritiesController extends BasicController{
 		if (errorMessage != null) {
 			return response.fail(errorMessage);
 		}
-		authorities.setId(ouserService.currentUserId(request));
+		authorities.setCreator(ouserService.currentUserId(request));
 		authorities.setCreateTime(LocalDateTime.now());
 		authoritiesService.add(authorities, Integer.class);
 		
@@ -134,9 +134,9 @@ public class AuthoritiesController extends BasicController{
 	@GetMapping(value="/simpleList.re")
 	public ResponseResult<List<Authorities>> authList(
 			HttpServletRequest request,
-			Authorities authorities) {
+			AuthoritiesForm authorities) {
 		ResponseResult<List<Authorities>> response = new ResponseResult<>();
-		
+		System.out.println();
 		List<Authorities> auths = authoritiesService.getSimpleList(authorities);
 		
 		return response.success(auths);

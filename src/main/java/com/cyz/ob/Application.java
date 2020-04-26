@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cyz.basic.config.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 
 
