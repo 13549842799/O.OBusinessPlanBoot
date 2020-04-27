@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,7 @@ import com.cyz.basic.Exception.AddErrorException;
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
+import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.authority.pojo.Resources;
 import com.cyz.ob.authority.service.ResourceService;
 import com.cyz.ob.basic.entity.PageEntity;
@@ -80,7 +83,6 @@ public class ResourceController extends BasicController{
 		resource.setCreateTime(LocalDateTime.now());		
 		try {
 			resourceService.add(resource, Integer.class);
-			//synSuperAdminAuths (ouserService.currentUsername(request), resource.getId());
 			resource = resourceService.getById(resource.getId());
 			return response.success(resource);
 		} catch (AddErrorException e) {
@@ -90,6 +92,34 @@ public class ResourceController extends BasicController{
 			e.printStackTrace();
 			return response.fail(e.getMessage());
 		}
+	  }
+	  
+	  /**
+	   * 批量修改资源的所属权限
+	   * @param request
+	   * @param form
+	   * @return
+	   */
+	  @PatchMapping("/alterAuth")
+	  public ResponseResult<Object> alterResourcesAuth(HttpServletRequest request,
+			  @RequestBody(required=true) AlterAuthsForm form) {
+		  ResponseResult<Object> response = new ResponseResult<>();
+		  
+		  if (form.getAuthId() == null || StrUtil.isEmpty(form.getResourceIds())) {
+			  return response.fail(ResultConstant.PARAMETER_REQUIRE_NULL);
+		  }
+		  
+		  //清空目标权限下的所有资源关联
+		  Resources p = new Resources();
+		  p.setAuthId(form.getAuthId());
+		  p.setDelflag(DeleteFlag.VALID.getCode());
+		  List<Resources> oldRs = resourceService.getSimpleList(p);
+		  if (oldRs != null && oldRs.size() > 0) {
+			  String oldIds = oldRs.stream().map(r -> String.valueOf(r.getId())).collect(Collectors.joining(","));
+			  resourceService.clearAuthsForRes(oldIds);
+		  }
+		  resourceService.batchAlterAuthsInResources(form.getAuthId(), form.getResourceIds());
+		  return response.success();
 	  }
 	  
 	  
@@ -150,13 +180,15 @@ public class ResourceController extends BasicController{
 		if (old.getLocking() == 1) {
 			return response.fail(ResultConstant.RESOURCE_LOCKING);
 		}
-	
-		Resources parent = resourceService.getById(resources.getPid());
-		if (parent == null) {
-			return response.fail(ResultConstant.NOT_EXIST_PARENT);
-		}
-		if (parent.getType() == Resources.INTERFACE) {
-			return response.fail(ResultConstant.TYPE_ERROR_FATHER);
+	    
+		if (resources.getPid() != null) {
+			Resources parent = resourceService.getById(resources.getPid());
+			if (parent == null) {
+				return response.fail(ResultConstant.NOT_EXIST_PARENT);
+			}
+			if (parent.getType() == Resources.INTERFACE) {
+				return response.fail(ResultConstant.TYPE_ERROR_FATHER);
+			}
 		}
         // 处理更改信息
 		
@@ -296,4 +328,22 @@ public class ResourceController extends BasicController{
 		  }	  
 	  }
 	
+	  public static final class AlterAuthsForm {
+		  private Integer authId;
+		  private String resourceIds;
+		public Integer getAuthId() {
+			return authId;
+		}
+		public void setAuthId(Integer authId) {
+			this.authId = authId;
+		}
+		public String getResourceIds() {
+			return resourceIds;
+		}
+		public void setResourceIds(String resourceIds) {
+			this.resourceIds = resourceIds;
+		}
+		  
+		  
+	  }
 }

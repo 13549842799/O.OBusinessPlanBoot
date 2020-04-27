@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
+import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.authority.pojo.Authorities;
 import com.cyz.ob.authority.pojo.AuthoritiesForm;
 import com.cyz.ob.authority.pojo.Roles;
@@ -136,7 +137,6 @@ public class AuthoritiesController extends BasicController{
 			HttpServletRequest request,
 			AuthoritiesForm authorities) {
 		ResponseResult<List<Authorities>> response = new ResponseResult<>();
-		System.out.println();
 		List<Authorities> auths = authoritiesService.getSimpleList(authorities);
 		
 		return response.success(auths);
@@ -160,7 +160,7 @@ public class AuthoritiesController extends BasicController{
 	 * @param addAuth
 	 * @return
 	 */
-	@PostMapping("addAuthstoUser.do")
+	@PostMapping("/addAuthstoUser.do")
 	public ResponseResult<String> addAuthsToUser(
 			HttpServletRequest request,
 			@RequestBody(required=true) AddAuthsForm addAuth) {
@@ -176,6 +176,7 @@ public class AuthoritiesController extends BasicController{
 		List<Authorities> add = authoritiesService.createByParams(addAuth.getInAuthIds(), DeleteFlag.VALID.getCode()),
 				rem = authoritiesService.createByParams(addAuth.getReAuthIds(), DeleteFlag.DELETE.getCode());
 		add.addAll(rem);
+		System.out.println(add.size());
 		authoritiesService.addAuthsToUser(add, user);
 		
 		return result.success();
@@ -194,17 +195,14 @@ public class AuthoritiesController extends BasicController{
 		
 		ResponseResult<String> result = new ResponseResult<>();
 		
-		if (addAuth.getRoleId() == null || (addAuth.getInAuthIds() == null && addAuth.getReAuthIds() == null)) {
+		if (addAuth.getRoleId() == null || (StrUtil.isEmpty(addAuth.getInAuthIds()) && StrUtil.isEmpty(addAuth.getReAuthIds()))) {
 			return result.fail(ResultConstant.PARAMETER_REQUIRE_NULL);
 		}
-		
-		
 		Roles role = rolesService.getById(addAuth.getRoleId());
 		List<Authorities> add = authoritiesService.createByParams(addAuth.getInAuthIds(), DeleteFlag.VALID.getCode()),
 				rem = authoritiesService.createByParams(addAuth.getReAuthIds(), DeleteFlag.DELETE.getCode());
 		add.addAll(rem);
-		authoritiesService.addAuthsToRole(add, role);
-		
+		authoritiesService.addAuthsToRole(add, role);	
 		return result.success();
 	}
 	

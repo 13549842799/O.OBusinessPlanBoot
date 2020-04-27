@@ -26,6 +26,7 @@ import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.enumeration.DeleteFlag;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.authority.pojo.Roles;
+import com.cyz.ob.authority.pojo.RolesForm;
 import com.cyz.ob.authority.service.AuthoritiesService;
 import com.cyz.ob.authority.service.RolesService;
 import com.cyz.ob.basic.entity.PageEntity;
@@ -147,7 +148,7 @@ public class RolesController extends BasicController{
 	  public ResponseResult<PageInfo<Roles>> rolePage(
 			  HttpServletRequest request, 
 			  PageEntity<Roles> pageParam, 
-			  Roles role) {
+			  RolesForm role) {
 		  
 		  ResponseResult<PageInfo<Roles>> result = new ResponseResult<>();
 		  
@@ -187,9 +188,12 @@ public class RolesController extends BasicController{
 	   */
 	  @GetMapping(value="/list.re")
 	  public ResponseResult<List<Roles>> rolePageList(
-			  HttpServletRequest request) {
+			  HttpServletRequest request, RolesForm role) {
+		  ResponseResult<List<Roles>> result = new ResponseResult<>();
 		  
-		  return null;
+		  role.setDelflag(DeleteFlag.VALID.getCode());
+		  List<Roles> list = rolesService.getList(role);
+		  return result.success(list);
 	  }
 	  
 	  public static final class AddRolesForm {

@@ -93,5 +93,13 @@ public class ResourceService extends PageServiceTemplate<Resources, PageEntity<R
 		
 		return mapper.getSimpleList(resources);
 	}
+	
+	public void batchAlterAuthsInResources(Integer authId, String resourceIds) {
+		mapper.alterAuthsBatch(authId, resourceIds);
+	}
+	
+	public void clearAuthsForRes(String resourceIds) {
+		batchAlterAuthsInResources(null, resourceIds);
+	}
 
 }

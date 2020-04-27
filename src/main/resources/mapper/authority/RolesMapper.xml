@@ -80,13 +80,19 @@
         SELECT
         <include refid="base_column"/>
         FROM roles ro
+        <if test="userId != null">
+        LEFT JOIN roles_user ro_us ON (ro.id = ro_us.role_id AND ro_us.delflag = #{delflag})
+        </if>
         <where>
           <trim prefixOverrides="AND">
+          <if test="userId != null">
+            AND ro_us.user_id = #{userId}
+          </if>
           <if test="name != null">
-            AND ro.`name` like cancat('%', #{name}, '%')
+            AND ro.`name` like concat('%', #{name}, '%')
           </if>
           <if test="displayName != null">
-            AND ro.`displayName` like cancat('%', #{displayName}, '%')
+            AND ro.`displayName` like concat('%', #{displayName}, '%')
           </if>
           <if test="delflag != null">
             AND ro.delflag = #{delflag, jdbcType=TINYINT}

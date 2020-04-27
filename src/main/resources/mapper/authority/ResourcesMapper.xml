@@ -208,14 +208,13 @@
     </update>
     
     <update id="updateFull" parameterType="resources">
-        UPDATE resource SET 
+        UPDATE resources SET 
             pid = #{pid},
-            name = #{name},
-            style = #{style},
-            type = #{type},
-            describes = #{describes},
-            state = #{state,jdbcType=TINYINT},
-            delflag = #{delflag,jdbcType=TINYINT}
+            `displayName` = #{displayName},
+            authId = #{authId},
+            url = #{url},
+            sort = #{sort},
+            describes = #{describes}
          WHERE id = #{id}
     </update>
 
@@ -248,9 +247,26 @@
     
     <select id="getSimpleList" parameterType="resources" resultType="resources" >
     SELECT 
-        re.`name`,re.displayName, re.url, re.type
+        re.id, re.`name`,re.displayName, re.url, re.type
     FROM resources re
     <include refid="list_params" />
+    </select>
+    
+    <select id="getModuleResourcesList" resultType="resources">
+    SELECT 
+        re.id, re.pid, re.`name`, re.displayName, re.url, re.`type`, re.sort
+	FROM resources re 
+	LEFT JOIN authorities au ON re.authId = au.id 
+	LEFT JOIN authorities_ouser au_ou ON au.id = au_ou.auth_id
+	WHERE
+	    au_ou.user_id = #{userId}
+	AND re.`type` in (${types}) 
+	AND re.delflag = #{delflag}
+	AND au.delflag = #{delflag} 
+	AND au_ou.delflag = #{delflag} 
+	AND re.`state` = #{state}
+	GROUP BY re.id
+	ORDER BY re.`type`, re.sort 
     </select>
 
 </mapper>

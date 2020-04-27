@@ -44,10 +44,10 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
 	 * @param auths
 	 * @param user
 	 */
-    public void addAuthsToUser(List<Authorities> auths, Ouser user) {
+	public void addAuthsToUser(List<Authorities> auths, Ouser user) {
     	List<Map<String, Object>> authParams = new ArrayList<>();
     	if (auths != null && auths.size() > 0) {
-    		auths.forEach(a -> ParamsBuilder.create().authId(a.getId()).userId(user.getId()).roleId(0).build());
+    		auths.forEach(a ->authParams.add(ParamsBuilder.create().authId(a.getId()).userId(user.getId()).roleId(0).delflag(a.getDelflag()).build()));
     	}
 		this.addAuthsToUser(authParams);
 	}
@@ -76,7 +76,7 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
     		params.add(ParamsBuilder.create().roleId(role.getId()).authId(a.getId()).delflag(a.getDelflag()).build())
     	);
     	
-    	
+    	mapper.addAuthsToRoles(params);
 		
 	}
 	

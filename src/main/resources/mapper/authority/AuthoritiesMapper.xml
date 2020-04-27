@@ -20,6 +20,7 @@
             <id property="id" column="reid"/>
             <result property="displayName" column="reDisplayName"/>
 	        <result property="url" column="url"/>
+	        <result property="type" column="type"/>
         </collection>
     </resultMap>
 
@@ -101,7 +102,7 @@
         INSERT INTO authorities_ouser (auth_id, user_id, role_id, delflag)
         VALUES
         <foreach collection="list" item="l" separator=",">
-        (#{l.authID, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
+        (#{l.authId, jdbcType=INTEGER}, #{l.userId, jdbcType=INTEGER}, #{l.roleId, jdbcType=INTEGER}, #{l.delflag, jdbcType=TINYINT})
         </foreach>
         ON DUPLICATE KEY UPDATE delflag = VALUES(delflag)
     </insert>
@@ -202,15 +203,23 @@
             </if>
         </trim>
         </where>
+        GROUP BY au.id
     </select>
     
-    <select id="getSimpleAuths" parameterType="authorities" resultType="authorities">
+    <select id="getSimpleAuths" parameterType="authorities" resultMap="AuthorityWithResMap">
     SELECT
         au.id, au.`authName`, au.displayName
+        <if test="withRes != null">,re.url, re.displayName as reDisplayName, re.type</if>
     FROM
         authorities au
     <if test="roleId != null">
     LEFT JOIN authorities_roles au_ro ON ( au.id = au_ro.auth_id AND au_ro.delflag = #{delflag} )
+    </if>
+    <if test="userId != null">
+    LEFT JOIN authorities_ouser au_ou ON ( au.id = au_ou.auth_id AND au_ou.role_id = 0 AND au_ou.delflag = #{delflag})
+    </if>
+    <if test="withRes != null">
+    LEFT JOIN resources re ON (au.id = re.authId AND re.delflag = #{delflag})
     </if>
     where
     <if test="id != null">
@@ -218,6 +227,9 @@
     </if>
     <if test="roleId != null">
     au_ro.role_id = #{roleId} AND
+    </if>
+    <if test="userId != null">
+    au_ou.user_id = #{userId} AND
     </if>
     au.delflag = #{delflag}
     </select>
