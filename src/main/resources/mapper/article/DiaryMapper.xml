@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.DiaryMapper">
+
+    <resultMap id="DiaryMap" type="diary">
+        <id property="id" column="id"/>
+        <result property="delflag" column="delflag"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modifierTime"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="classify" column="classify"/>
+        <result property="date" column="date"/>
+        <result property="status" column="status"/>
+        <result property="source" column="source"/>
+    </resultMap>
+    
+    <resultMap id="DiaryWithLabelMap" type="diaryForm" extends="DiaryMap">
+        <result property="classifyName" column="cl_name"/>
+        <result property="labels" column="labels"/>
+        <collection property="labelList" ofType="label">
+            <id property="id" column="l_id"/>
+            <result property="name" column="l_name"/>
+            <result property="delflag" column="l_delfalg"/>
+        </collection>
+    </resultMap>
+
+    <sql id="base_column">
+    di.id,di.delflag,di.creator,di.createTime,di.modifier,di.modifyTime,di.title,di.content,di.classify,di.date, di.status, di.source
+    </sql>
+
+    <select id="getList" resultMap="DiaryWithLabelMap" parameterType="diary">
+    SELECT
+    <include refid="base_column" />, cl.`name` as cl_name, GROUP_CONCAT(la.`name`) as labels
+    FROM diary di
+    LEFT JOIN classify cl ON (di.classify = cl.id AND cl.delflag = #{delflag})
+    LEFT JOIN label la ON di.id = la.targetId AND la.targetType = 1
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="creator != null ">
+        AND di.`creator` = #{creator}
+        </if>
+        <if test="title != null ">
+        AND LOCATE(#{title}, di.`title`) > 0
+        </if>
+        <if test="classify != null ">
+        AND di.`classify` = #{classify}
+        </if>
+        <if test="title != null ">
+        AND LOCATE(#{labels}, la.`name`) > 0
+        </if>
+        <if test="date != null ">
+        AND di.`date` = #{date}
+        </if>
+        <if test="startTime != null">
+        AND <![CDATA[di.date >= #{startTime,jdbcType=DATE}]]>
+        </if>
+        <if test="endTime != null">
+        AND <![CDATA[di.date <= #{endTime,jdbcType=DATE}]]>
+        </if>
+        <if test="status != null ">
+        AND di.`status` = #{status}
+        </if>
+        <if test="delflag != null ">
+        AND di.`delflag` = #{delflag}
+        </if>
+        </trim>
+    </where>
+    GROUP BY di.id
+    ORDER BY di.`date` desc
+    </select>
+
+</mapper>

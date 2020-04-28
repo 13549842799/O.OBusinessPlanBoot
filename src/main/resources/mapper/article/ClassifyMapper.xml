@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.ClassifyMapper">
+
+     <resultMap id="ClassifyMap" type="classify">
+        <id property="id" column="id"/>
+        <result property="delflag" column="delflag"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="childType" column="childType"/>
+        <result property="count" column="count"/>
+    </resultMap>
+
+    <sql id="base_column">
+        cl.id,cl.delflag,cl.creator,cl.createTime,cl.name,cl.type,cl.childType, cl.count
+    </sql>
+    
+    <sql id="expand_column">
+        cl.id,cl.delflag,cl.creator,cl.createTime,cl.name,cl.type,cl.childType, cot.num as count
+    </sql>
+
+    <select id="getList" resultType="classify" parameterType="classify">
+    SELECT 
+    <include refid="base_column"/>
+    FROM classify cl
+    LEFT JOIN (
+    <choose>
+       <when test="childType == 1">
+       SELECT COUNT(0) AS num, di.classify as cid FROM diary di WHERE di.delflag = #{delflag} GROUP BY di.classify
+       </when>
+       <when test="childType == 4">
+       SELECT COUNT(0) AS num, no.classify as cid FROM novel no WHERE no.delflag = #{delflag} GROUP BY no.classify
+       </when>
+       <otherwise>
+       SELECT 0 as num, 0 as cid
+       </otherwise>
+    </choose>
+    ) cot ON cl.id = cot.cid
+        WHERE 
+    <trim prefixOverrides="AND">
+        <if test="delflag != null ">
+        AND cl.`delflag` = #{delflag}
+        </if>
+        <if test="creator != null ">
+        AND (cl.`creator` = #{creator} OR cl.`type` = 1)
+        </if>
+        <if test="name != null ">
+        AND LOCATE(#{name}, cl.`name`) > 0
+        </if>
+        <if test="type != null ">
+        AND cl.`type` = #{type}
+        </if>
+        <if test="childType != null ">
+        AND cl.`childType` = #{childType}
+        </if>
+    </trim>
+    </select>
+
+</mapper>
