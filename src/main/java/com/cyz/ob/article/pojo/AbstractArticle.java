@@ -1,10 +1,12 @@
 package com.cyz.ob.article.pojo;
 
 import com.cyz.basic.pojo.ModifierEntity;
+import com.cyz.basic.valid.annotation.FieldMeta;
 
 @SuppressWarnings("serial")
 public abstract class AbstractArticle<T> extends ModifierEntity<T> {
 	
+	@FieldMeta("标题")
     private String title; //标题
 	
 	private String content; //内容 

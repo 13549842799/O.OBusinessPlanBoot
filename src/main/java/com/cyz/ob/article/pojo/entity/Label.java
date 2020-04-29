@@ -26,8 +26,6 @@ public class Label extends CreatorEntity<Integer> {
 
 	private String name;
 	
-	private Integer adminId;
-	
 	/**
 	 * 1-日记 4-小说
 	 */
@@ -46,14 +44,6 @@ public class Label extends CreatorEntity<Integer> {
 		this.name = name;
 	}
 
-	public Integer getAdminId() {
-		return adminId;
-	}
-
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
-	}
-	
 	public Byte getTargetType() {
 		return targetType;
 	}

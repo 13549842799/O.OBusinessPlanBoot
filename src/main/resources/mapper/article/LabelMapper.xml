@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.LabelMapper">
+
+     <resultMap id="LabelMap" type="label">
+        <id property="id" column="id"/>
+        <result property="delflag" column="delflag"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="name" column="name"/>
+        <result property="targetType" column="targetType"/>
+        <result property="targetId" column="targetId"/>
+    </resultMap>
+
+     <sql id="base_column">
+        la.id,la.delflag,la.creator,la.createTime,la.`name`,la.targetType,la.targetId
+     </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO label
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="name != null ">
+                name,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="name != null ">
+                #{name},
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <insert id="insertOrUpdate" parameterType="label">
+        INSERT INTO label (id, name, targetType, targetId, creator, createTime, delflag)
+        VALUES 
+        <foreach collection="list" item="l" separator=",">
+        (#{l.id}, #{l.name}, #{l.targetType}, #{l.targetId}, #{l.creator}, #{l.createTime},#{l.delflag})
+        </foreach>
+        ON DUPLICATE KEY UPDATE name = VALUES(name), delflag = VALUES(delflag)
+    </insert>
+
+    <update id="delete" >
+        UPDATE label set delflag = #{delflag}
+         WHERE id = #{ id }
+    </update>
+
+    <update id="update" parameterType="label">
+        UPDATE label SET 
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag = #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                creator = #{creator},
+                </if>
+                <if test="createTime != null ">
+                createTime = #{createTime},
+                </if>
+                <if test="name != null ">
+                name = #{name},
+                </if>
+            </trim>
+         WHERE id = #{id}
+    </update>
+
+    <update id="updateFull" parameterType="label">
+        UPDATE label SET 
+            delflag = #{delflag,jdbcType=TINYINT},
+            creator = #{creator},
+            createTime = #{createTime},
+            name = #{name}
+         WHERE id = #{id}
+    </update>
+
+    <select id="getList" resultType="label" parameterType="label">
+        SELECT 
+        <include refid="base_column"/>
+        FROM label la
+        WHERE 
+    <trim prefixOverrides="AND">
+        
+        <if test="creator != null ">
+        AND la.`creator` = #{creator}
+        </if>
+        <if test="name != null ">
+        AND LOCATE(#{name}, la.`name`) > 0 
+        </if>
+        <if test="targetId != null ">
+        AND la.targetId = #{targetId}
+        </if>
+        <if test="targetType != null ">
+        AND la.targetType = #{targetType}
+        </if>
+        <if test="delflag != null ">
+        AND la.`delflag` = #{delflag,jdbcType=TINYINT}
+        </if>
+    </trim>
+    </select>
+    
+    <select id="frequentlyUsedLabelNames" resultType="string">
+        SELECT
+            la.`name` as `name`
+        FROM
+            label la
+        WHERE
+    <trim prefixOverrides="AND">
+        <if test="creator != null">
+            la.creator = #{creator}
+        </if>
+        <if test="targetType != null">
+        AND la.targetType = #{targetType}
+        </if>
+        AND delflag = #{delflag}
+    </trim>
+        GROUP BY la.name
+        ORDER BY COUNT(la.`name`) desc
+        LIMIT #{count} 
+    </select>
+
+</mapper>

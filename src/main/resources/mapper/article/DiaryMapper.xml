@@ -30,6 +30,148 @@
     <sql id="base_column">
     di.id,di.delflag,di.creator,di.createTime,di.modifier,di.modifyTime,di.title,di.content,di.classify,di.date, di.status, di.source
     </sql>
+    
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO diary
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modifier != null ">
+                modifier,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+                <if test="title != null ">
+                title,
+                </if>
+                <if test="content != null ">
+                content,
+                </if>
+                <if test="classify != null ">
+                classify,
+                </if>
+                <if test="date != null ">
+                date,
+                </if>
+                <if test="status != null">
+                status,
+                </if>
+                <if test="source != null">
+                source,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="modifier != null ">
+                #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+                <if test="title != null ">
+                #{title},
+                </if>
+                <if test="content != null ">
+                #{content},
+                </if>
+                <if test="classify != null ">
+                #{classify},
+                </if>
+                <if test="date != null ">
+                #{date},
+                </if>
+                <if test="status != null">
+                #{status},
+                </if>
+                <if test="source != null">
+                #{source},
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" >
+    UPDATE diary set delflag = #{delflag} , modifier = #{modifier},modifyTime = #{modifyTime}
+    WHERE id = #{ id } AND creator = IFNULL(#{creator}, creator)
+    </update>
+    
+    <update id="update" parameterType="diary">
+    UPDATE diary SET 
+       <trim>
+           <if test="modifier != null ">
+           modifier = #{modifier},
+           </if>
+           <if test="modifyTime != null ">
+           modifyTime = #{modifyTime},
+           </if>
+           <if test="title != null ">
+           title = #{title},
+           </if>
+           <if test="content != null ">
+           content = #{content},
+           </if>
+           <if test="classify != null ">
+           classify = #{classify},
+           </if>
+           <if test="date != null ">
+           date = #{date},
+           </if>
+           <if test="status != null">
+           status = #{status}
+           </if>
+       </trim>
+     WHERE id = #{id}
+    </update>
+
+    <update id="updateFull" parameterType="diary">
+        UPDATE diary SET 
+            modifier = #{modifier},
+            modifyTime = #{modifyTime},
+            title = #{title},
+            content = #{content},
+            classify = #{classify},
+            date = #{date},
+            status = #{status}
+         WHERE id = #{id}
+    </update>
+    
+    <select id="get" resultMap="DiaryWithLabelMap" parameterType="diary">
+    SELECT
+    <include refid="base_column" />
+    FROM diary di
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null ">
+        AND di.`id` = #{id}
+        </if>
+        <if test="creator != null ">
+        AND di.`creator` = #{creator}
+        </if>
+        <if test="delflag != null ">
+        AND di.`delflag` = #{delflag}
+        </if>
+        </trim>
+    </where>
+    </select>
 
     <select id="getList" resultMap="DiaryWithLabelMap" parameterType="diary">
     SELECT
@@ -50,9 +192,6 @@
         </if>
         <if test="title != null ">
         AND LOCATE(#{labels}, la.`name`) > 0
-        </if>
-        <if test="date != null ">
-        AND di.`date` = #{date}
         </if>
         <if test="startTime != null">
         AND <![CDATA[di.date >= #{startTime,jdbcType=DATE}]]>

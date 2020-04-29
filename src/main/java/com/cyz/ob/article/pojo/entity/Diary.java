@@ -4,15 +4,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.cyz.basic.util.StrUtil;
+import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.ob.article.pojo.AbstractArticle;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+@EnableCheckOut
 public class Diary extends AbstractArticle<Integer> {
 	
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8423862982234247029L;
+	private static final long serialVersionUID = -4050329206165111488L;
 
 	/**
 	 * 
@@ -27,6 +30,8 @@ public class Diary extends AbstractArticle<Integer> {
 	private String labels; //格式 标签1,标签2,标签3...
 	
 	private List<Label> labelList;
+	
+	private String classifyName;
 
 	public Diary() {
 		super();
@@ -48,6 +53,7 @@ public class Diary extends AbstractArticle<Integer> {
 	
 	public Diary(Integer id) {
 		super(id);
+		delflag();
 	}
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -73,6 +79,14 @@ public class Diary extends AbstractArticle<Integer> {
 
 	public void setStatus(Byte status) {
 		this.status = status;
+	}
+	
+	public String getClassifyName() {
+		return classifyName;
+	}
+
+	public void setClassifyName(String classifyName) {
+		this.classifyName = classifyName;
 	}
 	
 	@Override

@@ -11,21 +11,15 @@ public class DiaryForm extends Diary {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4419043609625929464L;
-	
-	private String classifyName;
+	private static final long serialVersionUID = -6118169353766965119L;
+
+	/**
+	 * 
+	 */
 	
 	public LocalDate startTime;
 	
 	public LocalDate endTime;
-
-	public String getClassifyName() {
-		return classifyName;
-	}
-
-	public void setClassifyName(String classifyName) {
-		this.classifyName = classifyName;
-	}
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public LocalDate getStartTime() {
