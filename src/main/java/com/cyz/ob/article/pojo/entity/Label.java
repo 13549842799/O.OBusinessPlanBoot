@@ -35,6 +35,8 @@ public class Label extends CreatorEntity<Integer> {
 	 * 关联的实体的id 日记,小说,
 	 */
 	private Integer targetId;
+	
+	private Integer count;
 
 	public String getName() {
 		return name;
@@ -61,6 +63,17 @@ public class Label extends CreatorEntity<Integer> {
 
 	public void setTargetId(Integer targetId) {
 		this.targetId = targetId;
+	}
+
+	
+
+	public Integer getCount() {
+		return count;
+	}
+
+
+	public void setCount(Integer count) {
+		this.count = count;
 	}
 
 

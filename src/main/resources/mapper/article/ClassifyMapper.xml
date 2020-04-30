@@ -20,10 +20,98 @@
     <sql id="expand_column">
         cl.id,cl.delflag,cl.creator,cl.createTime,cl.name,cl.type,cl.childType, cot.num as count
     </sql>
+    
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO classify
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="name != null ">
+                name,
+                </if>
+                <if test="type != null ">
+                type,
+                </if>
+                <if test="childType != null ">
+                childType
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="name != null ">
+                #{name},
+                </if>
+                <if test="type != null ">
+                #{type},
+                </if>
+                <if test="childType != null ">
+                #{childType}
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" >
+        UPDATE classify set delflag = #{delflag}
+         WHERE id = #{ id }
+    </update>
+    
+    <update id="update" parameterType="classify">
+        UPDATE classify SET 
+            <trim suffixOverrides=",">
+                <if test="name != null ">
+                name = #{name},
+                </if>
+            </trim>
+         WHERE id = #{id}
+         <if test="creator">
+         AND creator = #{creator}
+         </if>
+    </update>
+    
+    <select id="get" resultType="classify" parameterType="classify">
+    SELECT 
+    <include refid="base_column"/>
+    FROM classify cl
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null">
+        AND cl.id = #{id}
+        </if>
+        <if test="name != null">
+        AND cl.`name` = #{name}
+        </if>
+        <if test="creator != null">
+        AND cl.creator = #{creator}
+        </if>
+        <if test="delflag != null">
+        AND cl.delflag = #{delflag}
+        </if>
+        </trim>
+    </where>
+    </select>
 
     <select id="getList" resultType="classify" parameterType="classify">
     SELECT 
-    <include refid="base_column"/>
+    <include refid="expand_column"/>
     FROM classify cl
     LEFT JOIN (
     <choose>
@@ -34,7 +122,11 @@
        SELECT COUNT(0) AS num, no.classify as cid FROM novel no WHERE no.delflag = #{delflag} GROUP BY no.classify
        </when>
        <otherwise>
-       SELECT 0 as num, 0 as cid
+       SELECT SUM(temp.num) as num, temp.cid as cid FROM (
+         SELECT COUNT(0) AS num, di.classify as cid FROM diary di WHERE di.delflag = #{delflag} GROUP BY di.classify
+         UNION ALL
+         SELECT COUNT(0) AS num, no.classify as cid FROM novel no WHERE no.delflag = #{delflag} GROUP BY no.classify
+       ) temp GROUP BY temp.cid 
        </otherwise>
     </choose>
     ) cot ON cl.id = cot.cid
@@ -51,6 +143,12 @@
         </if>
         <if test="type != null ">
         AND cl.`type` = #{type}
+        </if>
+        <if test="minCount != null">
+        AND <![CDATA[cot.num >= #{minCount}]]>
+        </if>
+        <if test="maxCount != null">
+        AND <![CDATA[cot.num <= #{maxCount}]]>
         </if>
         <if test="childType != null ">
         AND cl.`childType` = #{childType}

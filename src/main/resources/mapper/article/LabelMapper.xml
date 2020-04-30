@@ -11,7 +11,18 @@
         <result property="targetType" column="targetType"/>
         <result property="targetId" column="targetId"/>
     </resultMap>
-
+    
+    <resultMap id="ExtendMap" type="label">
+        <id property="id" column="id"/>
+        <result property="delflag" column="delflag"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="name" column="name"/>
+        <result property="targetType" column="targetType"/>
+        <result property="targetId" column="targetId"/>
+        <result property="count" column="count"/>
+    </resultMap>
+    
      <sql id="base_column">
         la.id,la.delflag,la.creator,la.createTime,la.`name`,la.targetType,la.targetId
      </sql>
@@ -94,13 +105,12 @@
          WHERE id = #{id}
     </update>
 
-    <select id="getList" resultType="label" parameterType="label">
-        SELECT 
-        <include refid="base_column"/>
-        FROM label la
-        WHERE 
-    <trim prefixOverrides="AND">
-        
+    <select id="getList" resultMap="ExtendMap" parameterType="labelForm">
+    SELECT 
+        la.`name`,la.targetType, COUNT(la.`name`) as count
+    FROM label la
+    WHERE 
+    <trim prefixOverrides="AND">      
         <if test="creator != null ">
         AND la.`creator` = #{creator}
         </if>
@@ -110,6 +120,9 @@
         <if test="targetId != null ">
         AND la.targetId = #{targetId}
         </if>
+        <if test="targetTypes != null">
+        AND la.targetType IN (${targetTypes})
+        </if>
         <if test="targetType != null ">
         AND la.targetType = #{targetType}
         </if>
@@ -117,6 +130,19 @@
         AND la.`delflag` = #{delflag,jdbcType=TINYINT}
         </if>
     </trim>
+    GROUP BY la.`name`, la.targetType
+    <if test="maxCount != null or minCount != null">
+    HAVING
+        <trim prefixOverrides="AND">
+         <if test="minCount != null">
+         AND <![CDATA[count >= #{minCount}]]>
+         </if>  
+        <if test="maxCount != null">
+        AND <![CDATA[count <= #{maxCount}]]>
+        </if>
+        </trim>
+    </if>
+    ORDER BY count desc
     </select>
     
     <select id="frequentlyUsedLabelNames" resultType="string">

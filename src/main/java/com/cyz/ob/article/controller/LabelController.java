@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.article.pojo.entity.Label;
+import com.cyz.ob.article.pojo.form.LabelForm;
 import com.cyz.ob.article.service.LabelService;
+import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.ouser.service.impl.OuserService;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping(value = "/api/article/label")
@@ -25,6 +28,19 @@ public class LabelController extends BasicController {
 	
 	@Autowired
 	private LabelService labelService;
+	
+	@GetMapping("/page.re")
+	public ResponseResult<PageInfo<Label>> page(HttpServletRequest request,
+			PageEntity<Label> pageParams,
+			LabelForm label) {
+		ResponseResult<PageInfo<Label>> response = new ResponseResult<>();
+		
+		label.setCreator(ouserService.currentUserId(request));
+		pageParams.setParams(label);
+		PageInfo<Label> page = labelService.getPage(pageParams);
+		
+		return response.success(page);
+	}
 	
 	@GetMapping(value = "/frequently-used.re")
     public ResponseResult<Set<String>> frequentlyUsedList(

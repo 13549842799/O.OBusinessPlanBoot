@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cyz.basic.pojo.CreatorEntity;
+import com.cyz.basic.valid.annotation.EnableCheckOut;
+import com.cyz.basic.valid.annotation.FieldMeta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@EnableCheckOut
 public class Classify extends CreatorEntity<Integer> {
 	
 	/**
@@ -43,10 +46,12 @@ public class Classify extends CreatorEntity<Integer> {
 		mapperTable.put(NOVEL, "novel");
 	}
 	
+	@FieldMeta(name="分类名")
 	private String name;
 	
 	private Byte type; // 1-系统  2-自定义
 	
+	@FieldMeta(name="所属")
 	private Byte childType; // 1-日记  2-备忘 3-灵感   4-小说
 	
 	private int count = 0; //拥有文章数
@@ -117,6 +122,20 @@ public class Classify extends CreatorEntity<Integer> {
 
 	public void setCount(int count) {
 		this.count = count;
+	}
+	
+	public String getChildTypeName() {
+		if (childType == null) {
+			return "无";
+		}
+		switch (childType) {
+		case DIARY:
+			return "日记";
+		case NOVEL:
+			return "小说";
+		default:
+			return "无";
+		}
 	}
 
 	@Override
