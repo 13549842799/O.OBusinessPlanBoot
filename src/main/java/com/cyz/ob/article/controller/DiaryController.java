@@ -18,6 +18,7 @@ import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.ob.article.pojo.entity.Diary;
 import com.cyz.ob.article.pojo.entity.Label;
 import com.cyz.ob.article.pojo.form.DiaryForm;
+import com.cyz.ob.article.pojo.form.LabelForm;
 import com.cyz.ob.article.service.DiaryService;
 import com.cyz.ob.article.service.LabelService;
 import com.cyz.ob.basic.entity.PageEntity;
@@ -61,7 +62,7 @@ public class DiaryController extends BasicController {
 		lp.delflag();
 		lp.setTargetId(diary.getId());
 		lp.setTargetType(ArticleType.DIARY);
-		diary.setLabelList(labelService.getList(lp));
+		diary.setLabelList(labelService.labels(lp));
 
 		return response.success(diary);
 	}
@@ -105,11 +106,11 @@ public class DiaryController extends BasicController {
 		if (diary == null) {
 			return response.fail("找不到目标日记");
 		}
-		Label param = new Label();
+		LabelForm param = new LabelForm();
 		param.delflag();
 		param.setTargetId(diary.getId());
 		param.setTargetType(ArticleType.DIARY);
-		diary.setLabelList(labelService.getList(param));
+		diary.setLabelList(labelService.labels(param));
 		return response.success(diary);
 	}
 

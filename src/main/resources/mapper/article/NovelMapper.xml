@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.NovelMapper">
+
+     <resultMap id="NovelMap" type="novel">
+        <id property="id" column="id" javaType="Integer"/>
+        <result property="delflag" column="delflag"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modifyTime"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="classify" column="classify"/>
+        <result property="cover" column="cover"/>
+        <result property="wordsNum" column="wordsNum"/>
+        <result property="novelState" column="novelState"/>
+        <result property="portionsNum" column="portionsNum"/>
+        <result property="sectionsNum" column="sectionsNum"/>
+        <result property="lastetSectionId" column="lastetSectionId"/>
+    </resultMap>
+
+    <resultMap type="novel" id="PageMap" extends="NovelMap">
+        <result property="classifyName" column="classifyName"/>
+         <result property="authorName" column="nikename" />
+        <association property="lastetSection" javaType="section" >
+            <id property="id" column="se_id"/>
+            <result property="title" column="se_title"/>
+            <result property="createTime" column="se_createTime"/>
+        </association>
+    </resultMap>
+
+     <sql id="base_column">
+        no.id,no.delflag,no.creator,no.createTime,no.modifier,no.modifyTime,no.title,no.content,no.classify,no.cover,
+        no.wordsNum, no.novelState, no.portionsNum,no.sectionsNum
+     </sql>
+     
+     <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO novel
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modifier != null ">
+                modifier,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+                <if test="title != null ">
+                title,
+                </if>
+                <if test="content != null ">
+                content,
+                </if>
+                <if test="classify != null ">
+                classify,
+                </if>
+                <if test="cover != null ">
+                cover,
+                </if>
+                <if test="labels != null ">
+                labels,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="modifier != null ">
+                #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+                <if test="title != null ">
+                #{title},
+                </if>
+                <if test="content != null ">
+                #{content},
+                </if>
+                <if test="classify != null ">
+                #{classify},
+                </if>
+                <if test="cover != null ">
+                #{cover},
+                </if>
+                <if test="labels != null ">
+                #{labels},
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" parameterType="novel">
+        UPDATE novel set delflag = #{delflag} , modifier = #{modifier},modifyTime = NOW()
+         WHERE id = #{ id } AND creator = #{creator}
+    </update>
+    
+    <update id="update" parameterType="novel">
+        UPDATE novel SET 
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag = #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                creator = #{creator},
+                </if>
+                <if test="createTime != null ">
+                createTime = #{createTime},
+                </if>
+                <if test="modifier != null ">
+                modifier = #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime = #{modifyTime},
+                </if>
+                <if test="title != null ">
+                title = #{title},
+                </if>
+                <if test="content != null ">
+                content = #{content},
+                </if>
+                <if test="classify != null ">
+                classify = #{classify},
+                </if>
+                <if test="cover != null ">
+                cover = #{cover},
+                </if>
+                <if test="wordsNum != null ">
+                wordsNum = #{wordsNum},
+                </if>
+                <if test="novelState != null ">
+                novelState = #{novelState},
+                </if>
+                <if test="portionsNum != null ">
+                portionsNum = #{portionsNum},
+                </if>
+                <if test="sectionsNum != null ">
+                sectionsNum = #{sectionsNum},
+                </if>
+                <if test="lastetSectionId != null ">
+                lastetSectionId = #{lastetSectionId},
+                </if>
+            </trim>
+         WHERE id = #{id}
+    </update>
+
+    <update id="updateFull" parameterType="novel">
+        UPDATE novel SET 
+            delflag = #{delflag,jdbcType=TINYINT},
+            creator = #{creator},
+            createTime = #{createTime},
+            modifier = #{modifier},
+            modifyTime = #{modifyTime},
+            title = #{title},
+            content = #{content},
+            classify = #{classify},
+            cover = #{cover},
+            Labels = #{Labels},
+            wordsNum = #{wordsNum},
+            novelState = #{novelState},
+            portionsNum = #{portionsNum},
+            sectionsNum = #{sectionsNum}
+         WHERE id = #{id}
+    </update>
+     
+     <select id="get" resultType="novel" parameterType="novel">
+     SELECT
+         <include refid="base_column"/>
+     FROM novel no
+     WHERE
+         no.id = #{id}
+     AND 
+         no.delflag = #{delflag}
+     </select>
+
+    <select id="getList" resultMap="PageMap" parameterType="novelForm">
+        SELECT 
+        <include refid="base_column"/>, cl.`name` as classifyName, GROUP_CONCAT(la.`name`) as labels, ou.nikename as nikename,
+        se.id as se_id,se.title as se_title, se.createTime as se_createTime
+        FROM novel no
+        LEFT JOIN classify cl ON no.classify = cl.id
+        LEFT JOIN label la ON (no.id = la.targetId AND targetType = 4 AND la.delflag = #{delflag} AND la.creator = #{creator})
+        LEFT JOIN ouser ou ON no.creator = ou.id
+        LEFT JOIN section se ON no.lastetSectionId = se.id
+        WHERE  
+    <trim prefixOverrides="AND">
+        <if test="creator != null ">
+        AND no.`creator` = #{creator}
+        </if>
+        <if test="title != null ">
+        AND LOCATE(#{title}, no.`title`) > 0
+        </if>
+        <if test="classify != null ">
+        AND cl.id = #{classify}
+        </if>
+        <if test="novelState != null ">
+        AND no.`novelState` = #{novelState}
+        </if>
+        <if test="labels != null ">
+        AND la.`name` IN (${labels})
+        </if>
+        <if test="delflag != null ">
+        AND no.`delflag` = #{delflag,jdbcType=TINYINT}
+        </if>
+    </trim>
+    GROUP BY no.id
+    ORDER BY no.createTime desc
+    </select>
+
+</mapper>

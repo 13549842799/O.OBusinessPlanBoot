@@ -190,7 +190,7 @@
         <if test="classify != null ">
         AND di.`classify` = #{classify}
         </if>
-        <if test="title != null ">
+        <if test="labels != null ">
         AND LOCATE(#{labels}, la.`name`) > 0
         </if>
         <if test="startTime != null">

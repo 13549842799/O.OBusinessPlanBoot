@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.SectionMapper">
+
+     <resultMap id="SectionMap" type="section">
+        <id property="id" column="id" javaType="LONG"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="createTime"/>
+        <result property="modifier" column="modifier"/>
+        <result property="modifyTime" column="modifyTime"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="novelId" column="novelId"/>
+        <result property="portionId" column="portionId"/>
+        <result property="remark" column="remark"/>
+        <result property="wordsNum" column="wordsNum"/>
+        <result property="number" column="number"/>
+        <result property="lastSection" column="lastSection"/>
+        <result property="nextSection" column="nextSection"/>
+        <collection property="files" ofType="uploadfile">
+            <id property="id" column="up_id"/>
+            <result property="creator" column="up_creator"/>
+            <result property="createTime" column="up_createTime"/>
+            <result property="name" column="up_name"/>
+            <result property="path" column="up_path"/>
+            <result property="fileType" column="fileType"/>
+            <result property="relevance" column="relevance"/>
+            <result property="objId" column="objId"/>
+            <result property="fileSize" column="fileSize"/>
+        </collection>
+    </resultMap>
+    
+    <resultMap type="sectionForm" id="SectionForm" extends="SectionMap">
+        <result property="novelName" column="no_title"/>
+        <result property="portionName" column="po_title"/>
+    </resultMap>
+
+    <sql id="base_column">
+        se.id,se.creator,se.createTime,se.modifier,se.modifyTime,se.title,se.content,se.novelId,se.portionId,se.remark,se.wordsNum,se.number, se.lastSection, se.nextSection
+    </sql>
+    
+    <sql id="expand_column">
+        <include refid="base_column" />, up.id as up_id, up.name as up_name, up.path as up_path
+    </sql>
+    
+    <sql id="form_column">
+        <include refid="expand_column" />, no.title as no_title, po.title as po_title
+    </sql>
+
+    <sql id="add_sql">
+    (
+            <trim suffixOverrides=",">
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modifier != null ">
+                modifier,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+                <if test="title != null ">
+                title,
+                </if>
+                <if test="content != null ">
+                content,
+                </if>
+                <if test="novelId != null">
+                novelId,
+                </if>
+                <if test="portionId != null ">
+                portionId,
+                number,
+                </if>
+                <if test="remark != null ">
+                remark,
+                </if>
+                <if test="wordsNum != null ">
+                wordsNum,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="modifier != null ">
+                #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+                <if test="title != null ">
+                #{title},
+                </if>
+                <if test="content != null ">
+                #{content},
+                </if>
+                <if test="novelId != null ">
+                #{novelId},
+                </if>
+                <if test="portionId != null ">
+                #{portionId},
+                (SELECT num FROM (SELECT IFNULL(MAX(number), 0) + 1 as num FROM section WHERE portionId = #{portionId}) t),
+                </if>
+                <if test="remark != null ">
+                #{remark},
+                </if>
+                <if test="wordsNum != null ">
+                #{wordsNum},
+                </if>
+            </trim>
+        )
+    </sql>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO section
+        <include refid="add_sql" />
+    </insert>
+    
+    <insert id="addToDel">
+        INSERT INTO section_del
+        <include refid="add_sql" />
+    </insert>
+    
+    <delete id="delete" parameterType="section">
+    DELETE FROM section where id = #{id} AND creator = #{creator}
+    </delete>
+
+    <update id="update" parameterType="section">
+        UPDATE section SET 
+            <trim suffixOverrides=",">
+                <if test="modifier != null ">
+                modifier = #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime = #{modifyTime},
+                </if>
+                <if test="title != null ">
+                title = #{title},
+                </if>
+                <if test="content != null ">
+                content = #{content},
+                </if>
+                <if test="portionId != null ">
+                portionId = #{portionId},
+                </if>
+                <if test="remark != null ">
+                remark = #{remark},
+                </if>
+                <if test="wordsNum != null ">
+                wordsNum = #{wordsNum},
+                </if>
+                <if test="number != null ">
+                number = #{number},
+                </if>
+                <if test="lastSection != null">
+                    <choose>
+                    <when test="lastSection == -1">
+                    lastSection = null,
+                    </when>
+                    <otherwise>
+                    lastSection = #{lastSection},
+                    </otherwise>
+                    </choose>
+                </if>
+                <if test="nextSection != null">
+                    <choose>
+                    <when test="nextSection == -1">
+                    nextSection = null,
+                    </when>
+                    <otherwise>
+                    nextSection = #{nextSection},
+                    </otherwise>
+                    </choose>
+                </if>
+            </trim>
+         WHERE id = #{id}
+    </update>
+
+    <update id="updateFull" parameterType="section">
+        UPDATE section SET 
+            modifier = #{modifier},
+            modifyTime = #{modifyTime},
+            title = #{title},
+            content = #{content},
+            portionId = #{portionId},
+            remark = #{remark},
+            wordsNum = #{wordsNum},
+            number = #{number}
+         WHERE id = #{id}
+    </update>
+
+    <select id="get" resultType="section" parameterType="section">
+        SELECT 
+        <include refid="base_column"/>
+        FROM section se
+        WHERE se.id = #{id}
+    </select>
+    
+    <select id="getExpandSection" resultMap="SectionForm" parameterType="section">
+        SELECT 
+        <include refid="form_column"/>
+        FROM section se
+        LEFT JOIN portion po on se.portionId = po.id
+        LEFT JOIN novel no on po.novelId = no.id
+        LEFT JOIN upload up on (up.relevance = 4 and se.id = up.objId)
+        WHERE 
+        <if test="id != -1">
+        se.id = #{id} AND se.creator = #{creator}
+        </if>
+        <if test="id == -1">
+        se.novelId = #{novelId} AND se.lastSection is null 
+        </if>
+    </select>
+
+    <select id="getList" resultType="section" parameterType="section">
+        SELECT 
+        <include refid="base_column"/>
+        FROM section se
+        WHERE 
+    <trim prefixOverrides="AND">
+        <if test="creator != null ">
+        AND se.`creator` = #{creator}
+        </if>
+        <if test="title != null ">
+        AND se.`title` = #{title}
+        </if>
+        <if test="content != null ">
+        AND se.`content` = #{content}
+        </if>
+        <if test="portionId != null ">
+        AND se.`portionId` = #{portionId}
+        </if>
+        <if test="remark != null ">
+        AND se.`remark` = #{remark}
+        </if>
+        <if test="wordsNum != null ">
+        AND se.`wordsNum` = #{wordsNum}
+        </if>
+        <if test="number != null ">
+        AND se.`number` = #{number}
+        </if>
+    </trim>
+        ORDER BY se.number
+    </select>
+    
+    <select id="lastSectionId" parameterType="section" resultType="long">
+    SELECT
+        id
+    FROM
+        section se
+    WHERE
+        se.novelId = #{novelId}
+    <if test="number == 1">
+     AND
+        se.portionId = (select id from portion where novelId = #{novelId} and id != #{portionId} order by number desc limit 1)
+    </if>
+    <if test="number != 1">
+    AND
+        se.portionId = #{portionId}
+    AND 
+        se.id != #{id}
+    </if>
+    ORDER BY se.number desc
+    LIMIT 1
+    </select>
+    
+    <select id="nextSectionId" parameterType="section" resultType="long">
+    SELECT
+        id
+    FROM
+        section se
+    WHERE
+        se.novelId = #{novelId}
+     AND
+        se.portionId = (select id from portion where novelId = #{novelId} and id > #{portionId} order by number limit 1)
+    ORDER BY se.number
+    LIMIT 1
+    </select>
+
+</mapper>

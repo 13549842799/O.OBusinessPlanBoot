@@ -67,5 +67,9 @@ public class LabelService extends PageServiceTemplate<Label, PageEntity<Label>> 
     	Set<String> labels = mapper.frequentlyUsedLabelNames(creator, targetType, DeleteFlag.VALID.getCode(), 6);  	
     	return labels != null ? labels : new HashSet<>();
     }
+    
+    public List<Label> labels(Label label) {
+    	return mapper.labels(label);
+    }
 
 }

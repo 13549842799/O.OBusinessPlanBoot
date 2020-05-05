@@ -1,6 +1,7 @@
 package com.cyz.ob.article.pojo.entity;
 
 import com.cyz.basic.pojo.CreatorEntity;
+import com.cyz.ob.common.constant.ArticleConstant.ArticleType;
 
 public class Label extends CreatorEntity<Integer> {
 	
@@ -76,6 +77,12 @@ public class Label extends CreatorEntity<Integer> {
 		this.count = count;
 	}
 
+	public String getTargetTypeName() {
+		if (targetType == null) {
+			return "";
+		}
+		return ArticleType.articleTypeMap.get(targetType);
+	}
 
 	/**
 	 * 为前端提供check属性初始值

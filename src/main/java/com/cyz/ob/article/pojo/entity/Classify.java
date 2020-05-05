@@ -1,11 +1,9 @@
 package com.cyz.ob.article.pojo.entity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.cyz.basic.pojo.CreatorEntity;
 import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.basic.valid.annotation.FieldMeta;
+import com.cyz.ob.common.constant.ArticleConstant.ArticleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @EnableCheckOut
@@ -25,26 +23,6 @@ public class Classify extends CreatorEntity<Integer> {
 	 * 用户自定义分类值
 	 */
 	public static final byte CUSTOMCLASSIFY = 2;
-	
-	/**
-	 * 日记
-	 */
-	public static final byte DIARY = 1;
-	
-	/**
-	 * 原本是总结，现在改为备忘
-	 */
-	public static final byte FinalReport = 2;
-	
-	public static final byte NOVEL = 4;
-	
-	public static final Map<Byte, String> mapperTable = new HashMap<>();
-	
-	{
-		mapperTable.put(DIARY, "diary");
-		//mapperTable.put(FinalReport, "finalreport");
-		mapperTable.put(NOVEL, "novel");
-	}
 	
 	@FieldMeta(name="分类名")
 	private String name;
@@ -80,7 +58,7 @@ public class Classify extends CreatorEntity<Integer> {
 	 * @return
 	 */
 	public String getThisTarget() {
-		return mapperTable.get(this.childType);
+		return ArticleType.mapperTable.get(this.childType);
 	}
 	
 	/**
@@ -129,9 +107,9 @@ public class Classify extends CreatorEntity<Integer> {
 			return "无";
 		}
 		switch (childType) {
-		case DIARY:
+		case ArticleType.DIARY:
 			return "日记";
-		case NOVEL:
+		case ArticleType.NOVEL:
 			return "小说";
 		default:
 			return "无";

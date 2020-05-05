@@ -34,7 +34,7 @@ public class LabelController extends BasicController {
 			PageEntity<Label> pageParams,
 			LabelForm label) {
 		ResponseResult<PageInfo<Label>> response = new ResponseResult<>();
-		
+		System.out.println(label.getTargetTypes());
 		label.setCreator(ouserService.currentUserId(request));
 		pageParams.setParams(label);
 		PageInfo<Label> page = labelService.getPage(pageParams);
