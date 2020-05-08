@@ -8,6 +8,8 @@ import com.cyz.basic.valid.annotation.EnableCheckOut;
 import com.cyz.basic.valid.annotation.FieldMeta;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
+/**
+ */
 @EnableCheckOut
 public class Authorities extends ModifierEntity<Integer> implements SecurityAuthority {
 	
@@ -118,7 +120,7 @@ public class Authorities extends ModifierEntity<Integer> implements SecurityAuth
 
 	@Override
 	public String getAuthority() {
-	    return this.authName;
+	    return "/O.OBusinessPlan" + this.authName;
 	}
 
 

@@ -73,6 +73,7 @@ public class AccountController extends BasicController {
         ResponseResult<PageInfo<Account>> response = new ResponseResult<>();
         manager.delflag();
         params.setParams(manager);
+        System.out.println();
         return response.success(accountService.getPage(params));
     }
     
@@ -80,7 +81,7 @@ public class AccountController extends BasicController {
     public ResponseResult<Account> getOne(HttpServletRequest request,
     		@PathVariable(name="id")Integer id) {
         ResponseResult<Account> response = new ResponseResult<>();
-
+        System.out.println("进入read");
         return response.success(accountService.getById(id));
     }
 
