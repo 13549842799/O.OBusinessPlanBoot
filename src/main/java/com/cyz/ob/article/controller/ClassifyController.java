@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cyz.basic.config.security.core.userdetails.User;
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.pojo.ResponseResult;
 import com.cyz.basic.util.StrUtil;
@@ -22,7 +20,6 @@ import com.cyz.ob.article.pojo.entity.Classify;
 import com.cyz.ob.article.pojo.form.ClassifyForm;
 import com.cyz.ob.article.service.ClassifyService;
 import com.cyz.ob.basic.entity.PageEntity;
-import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
 import com.github.pagehelper.PageInfo;
 

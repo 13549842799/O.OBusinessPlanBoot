@@ -1,10 +1,12 @@
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.cyz.ob.authority.service.AuthoritiesService;
 
+@Ignore
 public class MapperTest {
 	
     ApplicationContext context = null;

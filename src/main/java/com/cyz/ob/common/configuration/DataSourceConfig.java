@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.sql.DataSource;
 
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -49,7 +50,9 @@ public class DataSourceConfig {
 	   org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 	   configuration.setCallSettersOnNulls(true);
 	   factory.setConfiguration(configuration);
+	   System.out.println(typeAliasesPackage);
 	   factory.setTypeAliasesPackage(typeAliasesPackage); //配置类型别名
+	   factory.setVfs(SpringBootVFS.class);
 	   //配置分页插件
 	   /*PageInterceptor pageInterceptor = new PageInterceptor();
 	   Properties ps = new Properties();
