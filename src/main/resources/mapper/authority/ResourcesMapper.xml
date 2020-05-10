@@ -183,7 +183,7 @@
                 url = #{url},
                 </if>
                 <if test="withParam != null">
-                withParam = #{withParam}
+                withParam = #{withParam},
                 </if>
                 <if test="type != null ">
                 type = #{type},
@@ -212,6 +212,8 @@
             pid = #{pid},
             `displayName` = #{displayName},
             authId = #{authId},
+            type = #{type},
+            withParam = #{withParam},
             url = #{url},
             sort = #{sort},
             describes = #{describes}

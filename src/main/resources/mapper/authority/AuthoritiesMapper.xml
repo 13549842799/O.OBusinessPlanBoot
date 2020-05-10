@@ -135,7 +135,7 @@
         remark = #{remark},
         </if>
         <if test="modifier != null">
-        modifier = #{modify},
+        modifier = #{modifier},
         </if>
         <if test="modifyTime != null">
         modifyTime = #{modifyTime},
