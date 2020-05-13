@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.pojo.ResponseResult;
+import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.article.pojo.entity.Diary;
 import com.cyz.ob.article.pojo.entity.Label;
 import com.cyz.ob.article.pojo.form.DiaryForm;
@@ -46,6 +47,11 @@ public class DiaryController extends BasicController {
 		if (errorMessage != null) {
 			return response.fail(errorMessage);
 		}
+		
+		if (StrUtil.isEmpty(diary.getTitle())) {
+			return response.fail("请选择标题");
+		}
+		
 		Integer userId = ouserService.currentUserId(request);
 		diary.update(userId);
 		

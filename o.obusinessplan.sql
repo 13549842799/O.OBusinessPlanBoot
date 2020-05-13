@@ -55,6 +55,18 @@ CREATE TRIGGER alterForDeleteSection AFTER DELETE ON section FOR EACH ROW
 BEGIN
 UPDATE portion SET wordsNum = wordsNum - old.wordsNum, sectionNum = sectionNum - 1 WHERE id = old.portionId;
 UPDATE novel SET wordsNum = wordsNum - old.wordsNum, sectionsNum = sectionsNum - 1 WHERE id = old.novelId;
-INSERT INTO section_del VALUES(old.id, old.title, old.content, old.novelId, old.portionId, old.wordsNum, old.creator, old.createTime, old.modifier, old.modifyTime, old.remark, old.number, old.lastSection, old.nextSection);
+INSERT INTO section_del(oldId,title
+,content
+,novelId
+,portionId
+,wordsNum
+,creator
+,createTime
+,modifier
+,modifyTime
+,remark
+,number
+,lastSection
+,nextSection) VALUES(old.id, old.title, old.content, old.novelId, old.portionId, old.wordsNum, old.creator, old.createTime, old.modifier, old.modifyTime, old.remark, old.number, old.lastSection, old.nextSection);
 END &
 DELIMITER ;

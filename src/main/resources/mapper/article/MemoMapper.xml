@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.article.mapper.MemoMapper">
+
+    <sql id="base_column">
+        me.id,me.title,me.content,me.date,me.classify,me.creator,me.createTime,me.modifier,me.modifyTime,me.delfalg
+    </sql>
+    
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO memo
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modifier != null ">
+                modifier,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+                <if test="title != null ">
+                title,
+                </if>
+                <if test="content != null ">
+                content,
+                </if>
+                <if test="classify != null ">
+                classify
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="modifier != null ">
+                #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+                <if test="title != null ">
+                #{title},
+                </if>
+                <if test="content != null ">
+                #{content},
+                </if>
+                <if test="classify != null ">
+                #{classify}
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" >
+        UPDATE memo set delflag = #{delflag}
+         WHERE id = #{ id }
+    </update>
+    
+    <update id="update" parameterType="memo">
+        UPDATE memo SET 
+            <trim suffixOverrides=",">
+                <if test="name != null ">
+                name = #{name},
+                </if>
+                <if test="modifier != null ">
+                modifier = #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime = #{modifyTime},
+                </if>
+                <if test="title != null ">
+                title = #{title},
+                </if>
+                <if test="content != null ">
+                content = #{content},
+                </if>
+                <if test="classify != null ">
+                classify = #{classify},
+                </if>
+            </trim>
+         WHERE id = #{id}
+         <if test="creator">
+         AND creator = #{creator}
+         </if>
+    </update>
+    
+    <select id="get" resultType="memo" parameterType="memo">
+    SELECT 
+    <include refid="base_column"/>
+    FROM memo me
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null">
+        AND me.id = #{id}
+        </if>
+        <if test="creator != null">
+        AND me.creator = #{creator}
+        </if>
+        <if test="delflag != null">
+        AND me.delflag = #{delflag}
+        </if>
+        </trim>
+    </where>
+    </select>
+
+    <select id="classify" resultType="memo" parameterType="memo">
+    SELECT 
+    <include refid="expand_column"/>
+    FROM memo me
+    WHERE 
+    <trim prefixOverrides="AND">
+        <if test="delflag != null ">
+        AND me.`delflag` = #{delflag}
+        </if>
+        <if test="creator != null ">
+        AND me.`creator` = #{creator}
+        </if>
+        <if test="title != null ">
+        AND LOCATE(#{title}, me.`title`) > 0
+        </if>
+        <if test="classify != null ">
+        AND me.`classify` = #{classify}
+        </if>
+    </trim>
+    </select>
+
+</mapper>

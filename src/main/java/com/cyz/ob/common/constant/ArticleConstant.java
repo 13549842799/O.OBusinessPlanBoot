@@ -26,7 +26,7 @@ public interface ArticleConstant {
 		static {
 			articleTypeMap.put(DIARY, "日记");
 			articleTypeMap.put(MEMO, "备忘");
-			articleTypeMap.put(INSPIRATION, "小说");
+			articleTypeMap.put(INSPIRATION, "灵感");
 			articleTypeMap.put(NOVEL, "小说");
 			
 			mapperTable.put(DIARY, "diary");
