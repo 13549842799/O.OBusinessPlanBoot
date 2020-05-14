@@ -3,7 +3,7 @@
 <mapper namespace="com.cyz.ob.article.mapper.MemoMapper">
 
     <sql id="base_column">
-        me.id,me.title,me.content,me.date,me.classify,me.creator,me.createTime,me.modifier,me.modifyTime,me.delfalg
+        me.id,me.title,me.content,me.date,me.classify,me.creator,me.createTime,me.modifier,me.modifyTime,me.delflag
     </sql>
     
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
@@ -27,6 +27,9 @@
                 </if>
                 <if test="title != null ">
                 title,
+                </if>
+                <if test="date != null ">
+                date,
                 </if>
                 <if test="content != null ">
                 content,
@@ -55,6 +58,9 @@
                 </if>
                 <if test="title != null ">
                 #{title},
+                </if>
+                <if test="date != null ">
+                #{date},
                 </if>
                 <if test="content != null ">
                 #{content},
@@ -85,6 +91,9 @@
                 </if>
                 <if test="title != null ">
                 title = #{title},
+                </if>
+                <if test="date != null ">
+                date = #{date},
                 </if>
                 <if test="content != null ">
                 content = #{content},
@@ -118,9 +127,9 @@
     </where>
     </select>
 
-    <select id="classify" resultType="memo" parameterType="memo">
+    <select id="getList" resultType="memo" parameterType="memo">
     SELECT 
-    <include refid="expand_column"/>
+    <include refid="base_column"/>
     FROM memo me
     WHERE 
     <trim prefixOverrides="AND">
@@ -137,6 +146,7 @@
         AND me.`classify` = #{classify}
         </if>
     </trim>
+    ORDER BY me.`date` desc
     </select>
 
 </mapper>

@@ -53,7 +53,6 @@ public class WebMessageAuthenticationFilter implements Filter{
 			chain.doFilter(request, response);
 			return;
 		}
-		System.out.println(request.getParameter("code"));
 		WebMessage web = service.getByCode(request.getParameter("code"));
 		if (web == null) {
 			logger.info(" it must neet the code when you check then WebMessage ");
