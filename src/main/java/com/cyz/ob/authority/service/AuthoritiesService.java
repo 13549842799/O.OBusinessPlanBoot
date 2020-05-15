@@ -19,13 +19,17 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.IdsCreateService;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 import com.cyz.ob.common.util.ParamsBuilder;
+import com.cyz.ob.ouser.mapper.OuserMapper;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @Service
-public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEntity<Authorities>> implements IdsCreateService<Authorities> {
+public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEntity<Authorities>, Integer> implements IdsCreateService<Authorities> {
 	
 	@Autowired
 	private AuthoritiesMapper mapper;
+	
+	@Autowired
+	private OuserMapper ouserMapper;
 	
 	@Override
 	public Authorities newEntity() {
@@ -77,7 +81,19 @@ public class AuthoritiesService extends PageServiceTemplate<Authorities, PageEnt
     	);
     	
     	mapper.addAuthsToRoles(params);
-		
+    	
+    	List<Ouser> os = ouserMapper
+    			.getListByMap(ParamsBuilder.create().roleId(role.getId()).delflag(DeleteFlag.VALID.getCode()).build());
+    	
+    	if (os == null || os.size() == 0) {
+    		return;
+    	}
+    	
+    	final List<Map<String, Object>> uparams = new ArrayList<>();
+    	
+    	os.forEach(o -> params.forEach(p -> uparams.add(ParamsBuilder.create().init(p).userId(o.getId()).build())));
+    	
+		this.addAuthsToUser(uparams);
 	}
 	
 	public List<Authorities> searchAuthsById(String ids) {

@@ -9,7 +9,7 @@ import com.cyz.ob.additional.mapper.WebMessageMapper;
 import com.cyz.ob.ouser.pojo.entity.WebMessage;
 
 @Service
-public class WebMessageService extends BasicServiceImplTemplate<WebMessage> {
+public class WebMessageService extends BasicServiceImplTemplate<WebMessage, Integer> {
 	
 	@Autowired
 	private WebMessageMapper mapper;

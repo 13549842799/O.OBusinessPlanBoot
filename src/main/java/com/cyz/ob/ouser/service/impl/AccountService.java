@@ -12,7 +12,7 @@ import com.cyz.ob.ouser.mapper.AccountMapper;
 import com.cyz.ob.ouser.pojo.entity.Account;
 
 @Service
-public class AccountService extends PageServiceTemplate<Account, PageEntity<Account>> {
+public class AccountService extends PageServiceTemplate<Account, PageEntity<Account>, Integer> {
 	
 	@Autowired
 	private AccountMapper mapper;

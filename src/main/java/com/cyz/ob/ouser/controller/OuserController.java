@@ -183,5 +183,12 @@ public class OuserController extends BasicController{
 	    return response.success();
 	   
     }
+	
+	@PostMapping(value="/logout")
+    public ResponseResult<Ouser> O(HttpServletRequest request){
+		ResponseResult<Ouser> response = new ResponseResult<>();
+	    return response.success();
+	   
+    }
 
 }

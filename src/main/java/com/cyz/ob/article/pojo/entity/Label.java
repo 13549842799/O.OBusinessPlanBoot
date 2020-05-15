@@ -92,9 +92,4 @@ public class Label extends CreatorEntity<Integer> {
 		return false;
 	}
 
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
-	}
-
 }

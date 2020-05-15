@@ -8,7 +8,7 @@ import com.cyz.ob.article.mapper.SectionMapper;
 import com.cyz.ob.article.pojo.entity.Section;
 
 @Service
-public class SectionService extends BasicServiceImplTemplate<Section> {
+public class SectionService extends BasicServiceImplTemplate<Section, Long> {
 	
 	@Autowired
 	private SectionMapper mapper;

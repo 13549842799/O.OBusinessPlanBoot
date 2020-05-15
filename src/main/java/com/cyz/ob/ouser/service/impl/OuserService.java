@@ -20,7 +20,7 @@ import com.cyz.ob.ouser.mapper.OuserMapper;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @Service
-public class OuserService extends PageServiceTemplate<Ouser, PageEntity<Ouser>> {
+public class OuserService extends PageServiceTemplate<Ouser, PageEntity<Ouser>, Integer> {
 	
 	@Autowired
 	private OuserMapper mapper;
@@ -110,8 +110,6 @@ public class OuserService extends PageServiceTemplate<Ouser, PageEntity<Ouser>> 
 		}
 		return 1;
 	}
-    
-    
     
     @Override
     @CachePut

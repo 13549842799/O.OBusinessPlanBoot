@@ -2,6 +2,7 @@ package com.cyz.ob.article.pojo.entity;
 
 import java.time.LocalDate;
 
+import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.article.pojo.AbstractArticle;
 
 /**
@@ -24,10 +25,9 @@ public class Memo extends AbstractArticle<Integer> {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
+	
+	public String getDateStr() {
+		return date != null ? (date.getYear() == LocalDate.now().getYear() ? StrUtil.formatMonthDate(date) : StrUtil.formatDate(date)) : "";
 	}
 
 }

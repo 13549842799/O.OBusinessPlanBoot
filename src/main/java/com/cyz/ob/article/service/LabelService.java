@@ -18,7 +18,7 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class LabelService extends PageServiceTemplate<Label, PageEntity<Label>> {
+public class LabelService extends PageServiceTemplate<Label, PageEntity<Label>, Integer> {
 	
 	@Autowired
 	private LabelMapper mapper;

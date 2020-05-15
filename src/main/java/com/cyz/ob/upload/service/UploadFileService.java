@@ -12,7 +12,7 @@ import com.cyz.ob.upload.mapper.UploadFileMapper;
 import com.cyz.ob.upload.pojo.UploadFile;
 
 @Service
-public class UploadFileService extends BasicServiceImplTemplate<UploadFile> {
+public class UploadFileService extends BasicServiceImplTemplate<UploadFile, Long> {
 	
 	@Autowired
 	private UploadFileMapper mapper;

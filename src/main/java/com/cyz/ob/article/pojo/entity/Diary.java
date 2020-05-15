@@ -89,11 +89,6 @@ public class Diary extends AbstractArticle<Integer> {
 		this.classifyName = classifyName;
 	}
 	
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
-	}
-	
 	public String[] getSimpleLabls () {
 		
 		if (StrUtil.isEmpty(labels)) {

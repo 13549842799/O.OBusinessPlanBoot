@@ -9,7 +9,7 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class DiaryService extends PageServiceTemplate<Diary, PageEntity<Diary>> {
+public class DiaryService extends PageServiceTemplate<Diary, PageEntity<Diary>, Integer> {
 	
 	@Autowired
 	private DiaryMapper mapper;

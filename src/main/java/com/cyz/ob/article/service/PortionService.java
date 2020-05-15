@@ -10,7 +10,7 @@ import com.cyz.ob.article.mapper.PortionMapper;
 import com.cyz.ob.article.pojo.entity.Portion;
 
 @Service
-public class PortionService extends BasicServiceImplTemplate<Portion> {
+public class PortionService extends BasicServiceImplTemplate<Portion, Integer> {
 	
 	@Autowired
 	private PortionMapper mapper;

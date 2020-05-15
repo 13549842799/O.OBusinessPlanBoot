@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyz.ob.knowledge.mapper.KnowledgeArticleMapper">
+
+    <sql id="base_column">
+        kn.id,kn.title,kn.content,kn.creator,kn.createTime,kn.modifier,kn.modifyTime,kn.delflag
+    </sql>
+    
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO knowledge_article
+        (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                </if>
+                <if test="createTime != null ">
+                createTime,
+                </if>
+                <if test="modifier != null ">
+                modifier,
+                </if>
+                <if test="modifyTime != null ">
+                modifyTime,
+                </if>
+                <if test="title != null ">
+                title,
+                </if>
+                <if test="content != null ">
+                content,
+                </if>
+            </trim>
+        )
+        VALUES (
+            <trim suffixOverrides=",">
+                <if test="delflag != null ">
+                #{delflag,jdbcType=TINYINT},
+                </if>
+                <if test="creator != null ">
+                #{creator},
+                </if>
+                <if test="createTime != null ">
+                #{createTime},
+                </if>
+                <if test="modifier != null ">
+                #{modifier},
+                </if>
+                <if test="modifyTime != null ">
+                #{modifyTime},
+                </if>
+                <if test="title != null ">
+                #{title},
+                </if>
+                <if test="content != null ">
+                #{content},
+                </if>
+            </trim>
+        )
+    </insert>
+    
+    <update id="delete" >
+    UPDATE knowledge_article set delflag = #{delflag} , modifier = #{modifier},modifyTime = #{modifyTime}
+    WHERE id = #{ id } AND creator = IFNULL(#{creator}, creator)
+    </update>
+    
+    <update id="update" parameterType="knowledgeArticle">
+    UPDATE knowledge_article SET 
+       <trim>
+           <if test="modifier != null ">
+           modifier = #{modifier},
+           </if>
+           <if test="modifyTime != null ">
+           modifyTime = #{modifyTime},
+           </if>
+           <if test="title != null ">
+           title = #{title},
+           </if>
+           <if test="content != null ">
+           content = #{content},
+           </if>
+       </trim>
+     WHERE id = #{id}
+    </update>
+
+    <update id="updateFull" parameterType="knowledgeArticle">
+        UPDATE knowledge_article SET 
+            modifier = #{modifier},
+            modifyTime = #{modifyTime},
+            title = #{title},
+            content = #{content}
+         WHERE id = #{id}
+    </update>
+    
+    <select id="get" resultType="knowledgeArticle" parameterType="knowledgeArticle">
+    SELECT
+    <include refid="base_column" />
+    FROM knowledge_article kn
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="id != null ">
+        AND kn.`id` = #{id}
+        </if>
+        <if test="creator != null ">
+        AND kn.`creator` = #{creator}
+        </if>
+        <if test="delflag != null ">
+        AND kn.`delflag` = #{delflag}
+        </if>
+        </trim>
+    </where>
+    </select>
+
+    <select id="getList" resultType="knowledgeArticle" parameterType="knowledgeArticle">
+    SELECT
+    <include refid="base_column" />, GROUP_CONCAT(la.`name`) as labels
+    FROM knowledge_article kn
+    LEFT JOIN label la ON kn.id = la.targetId AND la.targetType = 5
+    <where>
+        <trim prefixOverrides="AND">
+        <if test="creator != null ">
+        AND kn.`creator` = #{creator}
+        </if>
+        <if test="title != null ">
+        AND LOCATE(#{title}, kn.`title`) > 0
+        </if>
+        <if test="labels != null ">
+        AND LOCATE(#{labels}, la.`name`) > 0
+        </if>
+        <if test="delflag != null ">
+        AND kn.`delflag` = #{delflag}
+        </if>
+        </trim>
+    </where>
+    GROUP BY kn.id
+    ORDER BY kn.modifyTime desc
+    </select>
+
+</mapper>

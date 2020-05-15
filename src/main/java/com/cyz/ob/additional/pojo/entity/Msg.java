@@ -88,11 +88,4 @@ public class Msg extends DeleteAbleEntity<Integer>{
 		this.validTime = validTime;
 	}
 
-
-
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
-	}
-
 }

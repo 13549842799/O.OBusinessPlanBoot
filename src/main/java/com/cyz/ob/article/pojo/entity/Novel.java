@@ -193,10 +193,5 @@ public class Novel extends AbstractArticle<Integer> {
 		}
 		return String.format("%.2f万字", this.getWordsNum().doubleValue()/10000);
 	}
-	
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
-	}
 
 }

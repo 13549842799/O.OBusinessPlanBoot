@@ -9,7 +9,7 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class NovelService extends PageServiceTemplate<Novel, PageEntity<Novel>> {
+public class NovelService extends PageServiceTemplate<Novel, PageEntity<Novel>, Integer> {
 	
 	@Autowired
 	private NovelMapper mapper;

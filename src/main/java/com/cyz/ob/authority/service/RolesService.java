@@ -20,7 +20,7 @@ import com.cyz.ob.common.util.ParamsBuilder;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 
 @Service
-public class RolesService extends PageServiceTemplate<Roles, PageEntity<Roles>> implements IdsCreateService<Roles> {
+public class RolesService extends PageServiceTemplate<Roles, PageEntity<Roles>, Integer> implements IdsCreateService<Roles> {
 	
 	
 	

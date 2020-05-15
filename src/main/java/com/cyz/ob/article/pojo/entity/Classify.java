@@ -116,9 +116,4 @@ public class Classify extends CreatorEntity<Integer> {
 		}
 	}
 
-	@Override
-	public void acceptId(long id) {
-		this.id = Integer.parseInt(String.valueOf(id));
-	}
-
 }

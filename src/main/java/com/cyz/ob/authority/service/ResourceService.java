@@ -16,7 +16,7 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class ResourceService extends PageServiceTemplate<Resources, PageEntity<Resources>> {
+public class ResourceService extends PageServiceTemplate<Resources, PageEntity<Resources>, Integer> {
 	
 	@Autowired
 	private ResourcesMapper mapper;

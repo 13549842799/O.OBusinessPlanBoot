@@ -12,7 +12,7 @@ import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.basic.service.PageServiceTemplate;
 
 @Service
-public class ClassifyService extends PageServiceTemplate<Classify, PageEntity<Classify>> {
+public class ClassifyService extends PageServiceTemplate<Classify, PageEntity<Classify>, Integer> {
 	
 	@Autowired
 	private ClassifyMapper mapper;

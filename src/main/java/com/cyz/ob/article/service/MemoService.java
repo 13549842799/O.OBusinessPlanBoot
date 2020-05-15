@@ -8,7 +8,7 @@ import com.cyz.ob.article.mapper.MemoMapper;
 import com.cyz.ob.article.pojo.entity.Memo;
 
 @Service
-public class MemoService extends BasicServiceImplTemplate<Memo> {
+public class MemoService extends BasicServiceImplTemplate<Memo, Integer> {
 	
 	@Autowired
 	private MemoMapper mapper;

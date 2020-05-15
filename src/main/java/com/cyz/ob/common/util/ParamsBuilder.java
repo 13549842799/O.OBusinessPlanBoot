@@ -1,6 +1,7 @@
 package com.cyz.ob.common.util;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ParamsBuilder {
 	
@@ -14,6 +15,11 @@ public class ParamsBuilder {
 	
 	public HashMap<String, Object> build() {
 		return this.params;
+	}
+	
+	public ParamsBuilder init(Map<String, Object> params) {
+		this.params.putAll(params);
+		return this;
 	}
 	
 	public ParamsBuilder roleId(Integer roleId) {
