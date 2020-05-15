@@ -17,6 +17,28 @@ public class KnowledgeArticle extends AbstractArticle<Integer> {
 	 * 
 	 */
 	private static final long serialVersionUID = -8451002789561666763L;
+	
+	
+
+	public KnowledgeArticle() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public KnowledgeArticle(Integer id, Byte delflag) {
+		super(id, delflag);
+		// TODO Auto-generated constructor stub
+	}
+
+	public KnowledgeArticle(Integer id) {
+		super(id);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public KnowledgeArticle(Integer id, Integer userId) {
+		super(id);
+		setCreator(userId);
+	}
 
 	private String labels;
 	

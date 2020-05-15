@@ -19,6 +19,8 @@ public interface ArticleConstant {
 		
 		public static final byte NOVEL = 4; //小说类型
 		
+		public static final byte KNOWLEDGE = 5; //技术文章
+		
 		public static final LinkedHashMap<Byte, String> articleTypeMap = new LinkedHashMap<>(4);
 		
 		public static final Map<Byte, String> mapperTable = new HashMap<>();

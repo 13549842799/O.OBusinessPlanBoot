@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cyz.basic.controller.BasicController;
 import com.cyz.basic.pojo.MethodResult;
 import com.cyz.basic.pojo.ResponseResult;
+import com.cyz.basic.util.QrCodeUtil;
 import com.cyz.basic.util.UpLoadUtil;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
