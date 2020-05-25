@@ -17,7 +17,7 @@ public class AccountService extends PageServiceTemplate<Account, PageEntity<Acco
 	@Autowired
 	private AccountMapper mapper;
 	
-	@Value("own.account.key")
+	@Value("${own.account.key}")
 	private String key;
 
 	@Override
@@ -29,16 +29,16 @@ public class AccountService extends PageServiceTemplate<Account, PageEntity<Acco
 		if (StrUtil.isEmpty(password) || StrUtil.isEmpty(key)) {
 			return null;
 		}
-		key +=key += key;
-		return DesUtil.getInstance().encrypt(password, key);
+		String k = key + key + key;
+		return DesUtil.getInstance().encrypt(password, k);
 	}
 	
 	public String decryptPassword(String encryptedPassword, int adminId){
-		key +=key += key;
 		if (StrUtil.isEmpty(encryptedPassword) || StrUtil.isEmpty(key)) {
 			return null;
 		}
-		return DesUtil.getInstance().decrypt(encryptedPassword, key);
+		String k = key + key + key;
+		return DesUtil.getInstance().decrypt(encryptedPassword, k);
 	}
 	
 	/**
@@ -47,6 +47,7 @@ public class AccountService extends PageServiceTemplate<Account, PageEntity<Acco
 	 * @return
 	 */
 	public boolean checkKey(String key) {
+		System.out.println(this.key);
 		return this.key.equals(key);
 	}
 

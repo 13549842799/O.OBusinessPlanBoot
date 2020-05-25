@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyz.basic.controller.BasicController;
@@ -88,6 +89,24 @@ public class AccountController extends BasicController {
         ResponseResult<Account> response = new ResponseResult<>();
         System.out.println("进入read");
         return response.success(accountService.getById(id));
+    }
+    
+    @GetMapping(value = "/getP.re")
+    public ResponseResult<Account> getP(HttpServletRequest request,
+    		@RequestParam("id")Integer id,
+    		@RequestParam("key")String key) {
+        ResponseResult<Account> response = new ResponseResult<>();
+        
+        Account a = accountService.getById(id);
+        System.out.println(a == null);
+        System.out.println(a.getPassword());
+        System.out.println(accountService.checkKey(key));
+        System.out.println(key);
+        if (a != null && a.getPassword() != null && accountService.checkKey(key)) {
+        	a.setPassword(accountService.decryptPassword(a.getPassword(), ouserService.currentUserId(request)));
+        	return response.success(a);
+        }  
+        return response.success(new Account());
     }
 
 }

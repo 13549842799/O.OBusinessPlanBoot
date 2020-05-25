@@ -25,7 +25,7 @@ import com.cyz.basic.util.QrCodeUtil;
 @RequestMapping(value = "/api/qrcode")
 public class QrCodeController {
 	
-	@Value("own.qrcode.loginPath")
+	@Value("${own.qrcode.loginPath}")
 	private String loginPath;
 
 	@GetMapping(value="/{id}/loginCode", produces = MediaType.IMAGE_JPEG_VALUE) 

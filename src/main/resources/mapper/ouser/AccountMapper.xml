@@ -16,9 +16,13 @@
      <sql id="base_column">
         ac.id,ac.password,ac.username,ac.source,ac.bind_email,ac.bind_phone,ac.remark,ac.delflag
      </sql>
+     
+     <sql id="base_column2">
+        ac.id,ac.username,ac.source,ac.bind_email,ac.bind_phone,ac.remark,ac.delflag
+     </sql>
 
     <insert id="add" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO account_manager
+        INSERT INTO account_manager 
         (
             <trim suffixOverrides=",">
                 <if test="username != null ">
@@ -44,7 +48,9 @@
                 </if>
                 <if test="creator != null ">
                 creator,
-                createTime
+                </if>
+                <if test="createTime != null ">
+                createTime,
                 </if>
             </trim>
         )
@@ -69,10 +75,12 @@
                 #{remark},
                 </if>
                 <if test="delflag != null ">
-                #{delflag,jdbcType=TINYINT}
+                #{delflag,jdbcType=TINYINT},
                 </if>
                 <if test="creator != null ">
-                #{creator,jdbcType=INTEGER},
+                #{creator},          
+                </if>
+                <if test="createTime != null">
                 #{createTime}
                 </if>
             </trim>
@@ -133,7 +141,7 @@
 
     <select id="getList" resultType="account" parameterType="account">
         SELECT 
-        <include refid="base_column"/>
+        <include refid="base_column2"/>
         FROM account_manager ac
         WHERE 
     <trim prefixOverrides="AND">
