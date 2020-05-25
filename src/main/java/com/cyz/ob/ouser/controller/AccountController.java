@@ -17,6 +17,7 @@ import com.cyz.basic.util.StrUtil;
 import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.ouser.pojo.entity.Account;
 import com.cyz.ob.ouser.service.impl.AccountService;
+import com.cyz.ob.ouser.service.impl.OuserService;
 import com.github.pagehelper.PageInfo;
 
 @RestController
@@ -24,14 +25,18 @@ import com.github.pagehelper.PageInfo;
 public class AccountController extends BasicController {
 	
 	@Autowired
+	private OuserService ouserService;
+	
+	@Autowired
 	private AccountService accountService;
 	
-	@PostMapping(value = "/add.do")
+	@PostMapping(value = "/save.do")
     public ResponseResult<Account> addAccount(HttpServletRequest request,
     		@RequestBody Account account) {
         ResponseResult<Account> response = new ResponseResult<>();
         account.setPassword(accountService.encryptPassword(account.getPassword()));
         if (account.getId() == null) {
+        	account.create(ouserService.currentUserId(request));
         	if (StrUtil.isEmpty(account.getPassword())) {
             	return response.fail("必须填写密码");
             }
@@ -72,8 +77,8 @@ public class AccountController extends BasicController {
     		PageEntity<Account> params) {
         ResponseResult<PageInfo<Account>> response = new ResponseResult<>();
         manager.delflag();
+        manager.setCreator(ouserService.currentUserId(request));
         params.setParams(manager);
-        System.out.println();
         return response.success(accountService.getPage(params));
     }
     

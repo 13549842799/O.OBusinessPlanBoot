@@ -40,5 +40,14 @@ public class AccountService extends PageServiceTemplate<Account, PageEntity<Acco
 		}
 		return DesUtil.getInstance().decrypt(encryptedPassword, key);
 	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean checkKey(String key) {
+		return this.key.equals(key);
+	}
 
 }

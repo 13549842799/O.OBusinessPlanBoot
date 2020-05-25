@@ -40,7 +40,11 @@
                 remark,
                 </if>
                 <if test="delflag != null ">
-                delflag
+                delflag,
+                </if>
+                <if test="creator != null ">
+                creator,
+                createTime
                 </if>
             </trim>
         )
@@ -66,6 +70,10 @@
                 </if>
                 <if test="delflag != null ">
                 #{delflag,jdbcType=TINYINT}
+                </if>
+                <if test="creator != null ">
+                #{creator,jdbcType=INTEGER},
+                #{createTime}
                 </if>
             </trim>
         )
@@ -139,7 +147,7 @@
         AND ac.`password` = #{password}
         </if>
         <if test="source != null ">
-        AND ac.`source` = #{source}
+        AND LOCATE(#{source}, ac.`source`) > 0
         </if>
         <if test="bind_email != null ">
         AND ac.`bind_email` = #{bind_email}
@@ -150,10 +158,14 @@
         <if test="remark != null ">
         AND ac.`remark` = #{remark}
         </if>
+        <if test="creator != null ">
+        AND ac.`creator` = #{creator}
+        </if>
         <if test="delflag != null ">
         AND ac.`delflag` = #{delflag,jdbcType=TINYINT}
         </if>
     </trim>
+    ORDER BY ac.createTime desc
     </select>
 
 </mapper>

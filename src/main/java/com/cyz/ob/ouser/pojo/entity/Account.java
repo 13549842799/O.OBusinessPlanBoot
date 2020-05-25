@@ -1,8 +1,8 @@
 package com.cyz.ob.ouser.pojo.entity;
 
-import com.cyz.basic.pojo.DeleteAbleEntity;
+import com.cyz.basic.pojo.CreatorEntity;
 
-public class Account extends DeleteAbleEntity<Integer> {
+public class Account extends CreatorEntity<Integer> {
 	
 	/**
 	 * 
