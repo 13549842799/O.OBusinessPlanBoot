@@ -1,9 +1,14 @@
 package com.cyz.ob.ouser.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +23,7 @@ import com.cyz.ob.additional.pojo.entity.Msg;
 import com.cyz.ob.additional.service.MsgService;
 import com.cyz.ob.basic.entity.PageEntity;
 import com.cyz.ob.common.constant.ResultConstant;
+import com.cyz.ob.common.socket.QrCodeLoginService;
 import com.cyz.ob.ouser.pojo.entity.Ouser;
 import com.cyz.ob.ouser.service.impl.OuserService;
 import com.github.pagehelper.PageInfo;
@@ -177,12 +183,32 @@ public class OuserController extends BasicController{
     }
 	
 	
+	
+	
 	@GetMapping(value="/login")
     public ResponseResult<Ouser> l(HttpServletRequest request){
 		ResponseResult<Ouser> response = new ResponseResult<>();
 	    return response.success();
 	   
     }
+	
+	@GetMapping(value="/loginBYQrCode")
+    public ResponseResult<Ouser> loginBYQrCode(HttpServletRequest request, @PathVariable("id")String id){
+		ResponseResult<Ouser> response = new ResponseResult<>();
+		
+		Map<String, Object> datas = new HashMap<>();
+		datas.put("type", "2");
+		datas.put("data", "");
+		try {
+			
+			QrCodeLoginService.sendInfo(datas, id);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	    return response.success();   
+    }
+
 	
 	@PostMapping(value="/logout")
     public ResponseResult<Ouser> O(HttpServletRequest request){

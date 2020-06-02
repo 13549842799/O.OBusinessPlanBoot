@@ -15,6 +15,7 @@ public class AopConfiguration {
 	
 	@Bean
 	public RecordAop recordAop() {
+
 		return new RecordAop();
 	}
 
