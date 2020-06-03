@@ -27,7 +27,6 @@ public class RecordAop {
 	
 	@After("execution(* com.cyz.basic.mapper.BasicMapper.add(..)) && args(entity)")
 	public void operationRecordAopAdd(JoinPoint point, IdEntity<?> entity) {
-		System.out.println("进入新增");
 		operationRecordAop(point, entity, "保存");
 	}
 	
@@ -38,7 +37,6 @@ public class RecordAop {
 	
 	@After("execution(* com.cyz.basic.mapper.BasicMapper.delete(..)) && args(entity)")
 	public void operationRecordAopDelete(JoinPoint point, IdEntity<?> entity) {
-		System.out.println("进入删除");
 		operationRecordAop(point, entity, "删除");
 	}
 	

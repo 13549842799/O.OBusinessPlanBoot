@@ -80,9 +80,6 @@
     <update id="update" parameterType="memo">
         UPDATE memo SET 
             <trim suffixOverrides=",">
-                <if test="name != null ">
-                name = #{name},
-                </if>
                 <if test="modifier != null ">
                 modifier = #{modifier},
                 </if>

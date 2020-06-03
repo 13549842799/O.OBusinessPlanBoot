@@ -98,10 +98,6 @@ public class AccountController extends BasicController {
         ResponseResult<Account> response = new ResponseResult<>();
         
         Account a = accountService.getById(id);
-        System.out.println(a == null);
-        System.out.println(a.getPassword());
-        System.out.println(accountService.checkKey(key));
-        System.out.println(key);
         if (a != null && a.getPassword() != null && accountService.checkKey(key)) {
         	a.setPassword(accountService.decryptPassword(a.getPassword(), ouserService.currentUserId(request)));
         	return response.success(a);
